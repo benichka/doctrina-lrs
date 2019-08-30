@@ -28,11 +28,11 @@ namespace Doctrina.Application.Infrastructure
 
             if (_timer.ElapsedMilliseconds > 500)
             {
-                var name = typeof(TRequest).Name;
+                string name = typeof(TRequest).Name;
 
                 // TODO: Add User Details
 
-                _logger.LogWarning("Doctrina Long Running Request: {Name} ({ElapsedMilliseconds} milliseconds) {@Request}", name, _timer.ElapsedMilliseconds, request);
+                _logger.LogWarning("Long Running Request: {Name} ({ElapsedMilliseconds} milliseconds) {@Request}", name, _timer.ElapsedMilliseconds, request);
             }
 
             return response;
