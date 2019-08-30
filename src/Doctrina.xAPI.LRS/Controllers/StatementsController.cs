@@ -24,7 +24,7 @@ namespace Doctrina.xAPI.Store.Controllers
     /// </summary>
     //[LRSAuthortize]
     //[ApiVersion]
-    [RequiredVersionHeaderAttribute]
+    [RequiredVersionHeader]
     [Route("xapi/statements")]
     [Produces("application/json")]
     public class StatementsController : ApiControllerBase
@@ -45,9 +45,6 @@ namespace Doctrina.xAPI.Store.Controllers
             [FromQuery(Name = "attachments")]bool includeAttachments = false,
             [FromQuery]ResultFormat format = ResultFormat.Exact)
         {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-
             Statement statement = await _mediator.Send(GetStatementQuery.Create(statementId, includeAttachments, format));
 
             if (statement == null)
@@ -128,12 +125,6 @@ namespace Doctrina.xAPI.Store.Controllers
         [Produces("application/json", "multipart/mixed")]
         public async Task<IActionResult> GetStatements([FromQuery]PagedStatementsQuery parameters)
         {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-
-            if (parameters == null)
-                parameters = new PagedStatementsQuery();
-
             ResultFormat format = parameters.Format ?? ResultFormat.Exact;
 
             // Validate parameters for combinations

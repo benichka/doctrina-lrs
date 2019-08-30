@@ -1,31 +1,27 @@
 {
-  "name": "clientapp",
+  "name": "ClientApp-single",
   "version": "0.1.0",
-  "private": true,
+  "license": "MIT",
+  "main": "lib-commonjs/index.js",
+  "module": "lib/index.js",
+  "scripts": {
+    "build": "just-scripts build",
+    "just": "just-scripts",
+    "start": "just-scripts start",
+    "test": "just-scripts test",
+    "change": "npx beachball change",
+    "gen": "npx plop"
+  },
   "dependencies": {
+    "office-ui-fabric-react": "^7.28.3",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
-    "react-scripts": "3.0.0"
+    "react-router": "^5.0.1",
+    "react-router-dom": "^5.0.1"
   },
-  "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
-  },
-  "eslintConfig": {
-    "extends": "react-app"
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
+  "devDependencies": {
+    "@types/react-router-dom": "^4.3.5",
+    "just-scripts": "^0.27.0",
+    "just-stack-react": "^1.0.0"
   }
 }

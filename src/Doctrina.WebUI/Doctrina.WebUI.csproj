@@ -14,7 +14,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="ClientApp\" />
     <Folder Include="Controllers\" />
     <Folder Include="Logs\" />
     <Folder Include="Mvc\" />
@@ -25,6 +24,8 @@
   <ItemGroup>
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="6.1.0" />
     <PackageReference Include="FluentValidation.AspNetCore" Version="8.3.0" />
+    <PackageReference Include="IdentityServer4" Version="2.5.3" />
+    <PackageReference Include="IdentityServer4.AspNetIdentity" Version="2.5.3" />
     <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="7.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.All" />
     <PackageReference Include="Microsoft.IdentityModel.JsonWebTokens" Version="5.4.0" />

@@ -10,13 +10,13 @@ using System.Threading.Tasks;
 
 namespace Doctrina.Application.SubStatements
 {
-    public class SubStatementHandler : IRequestHandler<CreateSubStatementCommand, SubStatementEntity>
+    public class CreateSubStatementCommandHandler : IRequestHandler<CreateSubStatementCommand, SubStatementEntity>
     {
         private readonly IDoctrinaDbContext _context;
         private readonly IMediator _mediator;
         private readonly IMapper _mapper;
 
-        public SubStatementHandler(IDoctrinaDbContext context, IMediator mediator, IMapper mapper)
+        public CreateSubStatementCommandHandler(IDoctrinaDbContext context, IMediator mediator, IMapper mapper)
         {
             _context = context;
             _mediator = mediator;

@@ -4,6 +4,7 @@ using Doctrina.Application.Infrastructure.AutoMapper;
 using Doctrina.Application.Interfaces;
 using Doctrina.Application.Statements;
 using Doctrina.Application.Statements.Commands;
+using Doctrina.Domain.Identity;
 using Doctrina.Persistence;
 using Doctrina.WebUI.Filters;
 using Doctrina.xAPI.Store.Builder;
@@ -13,14 +14,17 @@ using MediatR.Pipeline;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
+using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Logging;
 using NSwag.AspNetCore;
+using System;
 using System.Reflection;
 
 namespace Doctrina.WebUI
@@ -66,9 +70,33 @@ namespace Doctrina.WebUI
                 options.UseSqlServer(Configuration.GetConnectionString("DoctrinaDatabase")));
 #endif
 
-            //services.AddIdentity<DoctrinaUser, IdentityRole>()
-            //    .AddEntityFrameworkStores<DoctrinaContext>()
-            //    .AddDefaultTokenProviders();
+            services.AddIdentity<ApplicationUser, IdentityRole>()
+                .AddEntityFrameworkStores<DoctrinaDbContext>()
+                .AddDefaultTokenProviders();
+
+            services.AddIdentityServer()
+                .AddAspNetIdentity<ApplicationUser>();
+
+            services.Configure<IdentityOptions>(options =>
+            {
+                // Password settings.
+                options.Password.RequireDigit = true;
+                options.Password.RequireLowercase = true;
+                options.Password.RequireNonAlphanumeric = true;
+                options.Password.RequireUppercase = true;
+                options.Password.RequiredLength = 6;
+                options.Password.RequiredUniqueChars = 1;
+
+                // Lockout settings.
+                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
+                options.Lockout.MaxFailedAccessAttempts = 5;
+                options.Lockout.AllowedForNewUsers = true;
+
+                // User settings.
+                options.User.AllowedUserNameCharacters = 
+                    "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
+                options.User.RequireUniqueEmail = false;
+            });
 
             services.AddMvc(options => options.Filters.Add(typeof(CustomExceptionFilterAttribute)))
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
@@ -80,10 +108,10 @@ namespace Doctrina.WebUI
                 options.SuppressModelStateInvalidFilter = true;
             });
 
-            // In production, the Vue files will be served from this directory
+            // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
             {
-                configuration.RootPath = "ClientApp/public";
+                configuration.RootPath = "ClientApp/build";
             });
 
             services.AddLearningRecordStore();
@@ -105,6 +133,7 @@ namespace Doctrina.WebUI
             else
             {
                 app.UseExceptionHandler("/error");
+                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
 
@@ -126,7 +155,7 @@ namespace Doctrina.WebUI
             app.UseCookiePolicy();
 
             // Authenticate before the user accesses secure resources.
-            //app.UseAuthentication();
+            app.UseAuthentication();
 
             // If the app uses session state, call Session Middleware after Cookie 
             // Policy Middleware and before MVC Middleware.
@@ -148,7 +177,8 @@ namespace Doctrina.WebUI
 
                 if (env.IsDevelopment())
                 {
-                    spa.UseProxyToSpaDevelopmentServer("http://localhost:4200");
+                    spa.UseReactDevelopmentServer(npmScript: "start");
+                    //spa.UseProxyToSpaDevelopmentServer("http://localhost:4200");
                 }
             });
 
