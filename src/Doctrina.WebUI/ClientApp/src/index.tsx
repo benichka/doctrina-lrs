@@ -1,7 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { App } from './App';
+import App from './App';
 import { mergeStyles } from 'office-ui-fabric-react';
+import { BrowserRouter } from 'react-router-dom';
 
 // Inject some global styles
 mergeStyles({
@@ -14,4 +15,10 @@ mergeStyles({
   }
 });
 
-ReactDOM.render(<App />, document.getElementById('app'));
+const app = (
+  <BrowserRouter>
+    <App />
+  </BrowserRouter>
+);
+
+ReactDOM.render(app, document.getElementById('app'));

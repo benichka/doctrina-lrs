@@ -1,4 +1,5 @@
-﻿using Doctrina.xAPI;
+﻿
+using Doctrina.xAPI;
 using MediatR;
 using System.Linq;
 using System.Threading;

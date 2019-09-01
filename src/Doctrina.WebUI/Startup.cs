@@ -9,8 +9,12 @@ using Doctrina.Persistence;
 using Doctrina.WebUI.Filters;
 using Doctrina.xAPI.Store.Builder;
 using FluentValidation.AspNetCore;
+using IdentityServer4.Stores;
+using IdentityServer4.Test;
 using MediatR;
 using MediatR.Pipeline;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -23,9 +27,14 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Tokens;
 using NSwag.AspNetCore;
 using System;
+using System.IO;
+using System.Linq;
 using System.Reflection;
+using System.Security.Cryptography;
+using System.Security.Cryptography.X509Certificates;
 
 namespace Doctrina.WebUI
 {
@@ -74,8 +83,20 @@ namespace Doctrina.WebUI
                 .AddEntityFrameworkStores<DoctrinaDbContext>()
                 .AddDefaultTokenProviders();
 
+            // Add IdentityServer services
+            services.AddSingleton<IClientStore, CustomClientStore>();
+
             services.AddIdentityServer()
-                .AddAspNetIdentity<ApplicationUser>();
+                .AddAspNetIdentity<ApplicationUser>()
+#if DEBUG
+                 // Can be used for testing until a real cert is available
+                .AddDeveloperSigningCredential()
+                .AddTestUsers(new TestUser[] {
+                new TestUser{  Username = "admin@example.com", Password = "adminAdmin!" } }.ToList())
+#else
+                .AddSigningCredential(new X509Certificate2(Path.Combine(".", "certs", "IdentityServer4Auth.pfx")))
+#endif
+                .AddInMemoryApiResources(MyApiResourceProvider.GetApiResources()); ;
 
             services.Configure<IdentityOptions>(options =>
             {
@@ -96,6 +117,16 @@ namespace Doctrina.WebUI
                 options.User.AllowedUserNameCharacters = 
                     "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
                 options.User.RequireUniqueEmail = false;
+            });
+
+            // Enable the use of an [Authorize("Bearer")] attribute on methods and
+            // classes to protect.
+            services.AddAuthorization(auth =>
+            {
+                auth.AddPolicy("Bearer", new AuthorizationPolicyBuilder()
+                    .AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme‌​)
+                    .RequireAuthenticatedUser()
+                    .Build());
             });
 
             services.AddMvc(options => options.Filters.Add(typeof(CustomExceptionFilterAttribute)))
@@ -137,7 +168,9 @@ namespace Doctrina.WebUI
                 app.UseHsts();
             }
 
-            app.UseLearningRecordStore();
+            // Serilog Version 3.0.0.*
+            //app.UseSerilogRequestLogging();
+
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
@@ -154,8 +187,9 @@ namespace Doctrina.WebUI
             // Protection Regulation (GDPR) regulations.
             app.UseCookiePolicy();
 
-            // Authenticate before the user accesses secure resources.
-            app.UseAuthentication();
+            
+
+            app.UseLearningRecordStore();
 
             // If the app uses session state, call Session Middleware after Cookie 
             // Policy Middleware and before MVC Middleware.
@@ -166,6 +200,10 @@ namespace Doctrina.WebUI
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=home}/{action=index}/{id?}");
+
+                routes.MapSpaFallbackRoute(
+                    name: "spa-fallback",
+                    defaults: new { controller = "Home", action = "Index" });
             });
 
             app.UseSpa(spa =>

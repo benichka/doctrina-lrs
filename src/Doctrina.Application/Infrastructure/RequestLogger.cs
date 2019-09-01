@@ -16,11 +16,9 @@ namespace Doctrina.Application.Infrastructure
 
         public Task Process(TRequest request, CancellationToken cancellationToken)
         {
-            var name = typeof(TRequest).Name;
-
             // TODO: Add User Details
 
-            _logger.LogInformation("Northwind Request: {Name} {@Request}", name, request);
+            _logger.LogInformation("Request: {@Request}", request);
 
             return Task.CompletedTask;
         }

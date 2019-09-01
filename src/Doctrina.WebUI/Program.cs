@@ -18,33 +18,33 @@ namespace Doctrina.WebUI
         public static IConfiguration Configuration { get; } = new ConfigurationBuilder()
            .SetBasePath(Directory.GetCurrentDirectory())
            .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+           .AddJsonFile($"appsettings.{Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")}.json", optional: true)
            .AddEnvironmentVariables()
            .Build();
 
-        public static IWebHost BuildWebHost(string[] args) =>
-            WebHost.CreateDefaultBuilder(args)
+        public static IWebHost BuildWebHost(string[] args)
+        {
+            return WebHost.CreateDefaultBuilder(args)
                 .UseStartup<Startup>()
+                .ConfigureLogging((context, logging) => {
+                    // Clear our default providers
+                    logging.ClearProviders();
+
+                    //logging.AddConfiguration(Configuration.GetSection("Logging"));
+                    //logging.AddDebug();
+                    //logging.AddEventSourceLogger();
+                })
                 .UseSerilog()
-                //.UseKestrel(options =>
-                //{
-                //    options.Listen(IPAddress.Loopback, 5000);
-                //})
-                //.UseIISIntegration()
                 .Build();
+        }
 
         public static void Main(string[] args)
         {
             Log.Logger = new LoggerConfiguration()
-                //.ReadFrom.AppSettings()
-                .WriteTo.RollingFile("logs/log-{Date}.log",
-                    shared: true,
-                    flushToDiskInterval: new TimeSpan(0, 0, 5))
-                .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
-                .MinimumLevel.Override("Microsoft.AspNetCore.Mvc", LogEventLevel.Warning)
-                //.WriteTo.Console(restrictedToMinimumLevel: LogEventLevel.Error)
-                //.ReadFrom.Configuration(Configuration)
-                //.Enrich.WithProperty("AppName", "Doctrina LRS")
-                .CreateLogger();
+                .ReadFrom.Configuration(Configuration)
+               .MinimumLevel.Debug()
+               .Enrich.FromLogContext()
+               .CreateLogger();
 
             try
             {
@@ -62,8 +62,7 @@ namespace Doctrina.WebUI
                     }
                     catch (Exception ex)
                     {
-                        var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
-                        logger.LogError(ex, "An error occurred while migrating or initializing the database.");
+                        Log.Error(ex, "An error occurred while migrating or initializing the database.");
                     }
                 }
 

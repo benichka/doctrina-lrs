@@ -14,7 +14,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\" />
     <Folder Include="Logs\" />
     <Folder Include="Mvc\" />
     <Folder Include="Pages\" />
@@ -28,6 +27,7 @@
     <PackageReference Include="IdentityServer4.AspNetIdentity" Version="2.5.3" />
     <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="7.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.All" />
+    <PackageReference Include="Microsoft.Extensions.Identity.Core" Version="2.2.0" />
     <PackageReference Include="Microsoft.IdentityModel.JsonWebTokens" Version="5.4.0" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.1" />
     <PackageReference Include="NSwag.AspNetCore" Version="12.2.5" />
