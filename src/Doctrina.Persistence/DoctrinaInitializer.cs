@@ -13,11 +13,13 @@ namespace Doctrina.Persistence
     {
         private readonly DoctrinaDbContext _context;
         private readonly ILogger<DoctrinaInitializer> _logger;
+        private readonly ILookupNormalizer _normalizer;
 
-        public DoctrinaInitializer(IDoctrinaDbContext context, ILogger<DoctrinaInitializer> logger)
+        public DoctrinaInitializer(IDoctrinaDbContext context, ILogger<DoctrinaInitializer> logger, ILookupNormalizer normalizer)
         {
             _context = (DoctrinaDbContext)context;
             _logger = logger;
+            _normalizer = normalizer;
         }
 
         public void SeedEverything(CancellationToken cancellationToken = default)
@@ -33,9 +35,9 @@ namespace Doctrina.Persistence
                 var user = new DoctrinaUser
                 {
                     UserName = "Admin@bitflipping.net",
-                    NormalizedUserName = "admin@bitflipping.net",
+                    NormalizedUserName = _normalizer.Normalize("admin@bitflipping.net"),
                     Email = "admin@bitflipping.net",
-                    NormalizedEmail = "admin@bitflipping.net",
+                    NormalizedEmail = _normalizer.Normalize("admin@bitflipping.net"),
                     EmailConfirmed = true,
                     LockoutEnabled = false,
                     SecurityStamp = Guid.NewGuid().ToString()

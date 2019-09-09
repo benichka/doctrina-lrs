@@ -22,7 +22,7 @@ namespace Doctrina.WebUI.Controllers
         [HttpPost("login")]
         public async Task<ActionResult<LoginViewModel>> Login(LoginViewModel model)
         {
-            DoctrinaUser user = await _userManager.FindByEmailAsync(model.Username);
+            DoctrinaUser user = await _userManager.FindByNameAsync(model.UserName);
             if (user != null)
             {
                 var signInResult = await _signInManager.PasswordSignInAsync(user, model.Password, true, true);
