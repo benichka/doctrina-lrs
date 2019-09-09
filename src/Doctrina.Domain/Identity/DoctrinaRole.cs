@@ -2,7 +2,7 @@
 
 namespace Doctrina.Domain.Identity
 {
-    public class ApplicationUser : IdentityUser<string>
+    public class DoctrinaRole : IdentityRole<string>
     {
         
     }

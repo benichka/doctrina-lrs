@@ -3,6 +3,7 @@ using Doctrina.xAPI.Store.Routing;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
@@ -47,16 +48,6 @@ namespace Doctrina.xAPI.Store.Builder
             builder.UseMiddleware<AlternateRequestMiddleware>();
             builder.UseMiddleware<ConsistentThroughMiddleware>();
             builder.UseMiddleware<UnrecognizedParametersMiddleware>();
-
-            builder.UseMvc(routes =>
-            {
-                routes.MapRoute(
-                    name: "xapi",
-                    template: "xapi/{controller}"
-                );
-            });
-
-            
 
             return builder;
         }

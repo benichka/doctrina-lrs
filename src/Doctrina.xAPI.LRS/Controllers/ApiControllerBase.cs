@@ -12,11 +12,10 @@ namespace Doctrina.xAPI.Store.Controllers
         {
             get
             {
-                var uriBuilder = new UriBuilder()
+                if (User.Identity.IsAuthenticated)
                 {
-                    Host = Request.Host.Value,
-                    Scheme = Request.Scheme,
-                };
+                    // TODO: The current authority should be resolved using middleware and scoped through application
+                }
 
                 return new Agent()
                 {

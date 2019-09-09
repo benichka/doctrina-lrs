@@ -55,10 +55,15 @@ namespace Doctrina.WebUI
                     try
                     {
                         var context = scope.ServiceProvider.GetService<IDoctrinaDbContext>();
-
                         var concreteContext = (DoctrinaDbContext)context;
-                        concreteContext.Database.Migrate();
-                        DoctrinaInitializer.Initialize(concreteContext);
+
+                        if (concreteContext.Database.ProviderName != "Microsoft.EntityFrameworkCore.InMemory")
+                        {
+                            concreteContext.Database.Migrate();
+                        }
+
+                        var initializer = scope.ServiceProvider.GetService<IDoctrinaInitializer>();
+                        initializer.SeedEverything();
                     }
                     catch (Exception ex)
                     {

@@ -3,6 +3,7 @@ using Doctrina.Application.ActivityProfiles.Queries;
 using Doctrina.xAPI.Documents;
 using Doctrina.xAPI.Store.Mvc.Filters;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System;
@@ -12,6 +13,7 @@ using System.Threading.Tasks;
 
 namespace Doctrina.xAPI.Store.Controllers
 {
+    [Authorize]
     [HeadWithoutBody]
     [RequiredVersionHeaderAttribute]
     [Route("xapi/activities/profile")]

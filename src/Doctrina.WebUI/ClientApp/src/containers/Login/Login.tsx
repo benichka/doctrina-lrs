@@ -1,53 +1,43 @@
 ﻿import React, { useState } from 'react';
 import { Stack, Image, ImageFit, Label, TextField, PrimaryButton } from 'office-ui-fabric-react';
 import { RouteComponentProps, withRouter } from 'react-router';
-
-export interface ILoginProps
-{
-    onSuccess: () => void;
-}
+import { loginAsync } from '../../store/client/actions';
+import { connect } from 'react-redux';
+import { StoreState, ThunkDispatch } from '../../store/store';
 
 export interface ILoginParams
 {
     returnUrl?: string;
 }
 
-const Login: React.FunctionComponent<RouteComponentProps<ILoginParams> & ILoginProps> = (props) =>
+interface ILoginModel{
+    username: string | undefined;
+    password: string | undefined;
+}
+
+const Login: React.FunctionComponent<RouteComponentProps<ILoginParams> & ILoginDispatchProps> = (props) =>
 {
-    const [errorMessage, setErrorMessage] = useState("");
-    const [showSuccess, setShowSuccess] = useState(false);
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
+    const [loginModel, setLoginModel] = useState<ILoginModel>({
+        username: "",
+        password: ""
+    });
 
-    const handleSubmit = (event: React.FormEvent) =>
+    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) =>
     {
-        console.log(event);
-        fetch('/api/login/')
-            .then(response => {
-
-            })
-            .catch(reason => {
-                setErrorMessage(reason);
-            });
         event.preventDefault();
-    }
-
-    const handleEmailChange = (event:React.FormEvent<HTMLInputElement | HTMLTextAreaElement>, newValue:string | undefined) =>
-    {
-        if(newValue){
-            setEmail(newValue);
-        }else{
-            setEmail("");
+        if(loginModel.username && loginModel.password){
+            props.handleLogin(loginModel.username, loginModel.password);
         }
     }
 
-    const handlePasswordChange = (event:React.FormEvent<HTMLInputElement | HTMLTextAreaElement>, newValue:string | undefined) =>
+    const handleUsernameChange = (event: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>, newValue: string | undefined) =>
     {
-        if(newValue){
-            setPassword(newValue);
-        }else{
-            setPassword("");
-        }
+        setLoginModel({...loginModel, username: newValue});
+    }
+
+    const handlePasswordChange = (event: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>, newValue: string | undefined) =>
+    {
+        setLoginModel({...loginModel, password: newValue});
     }
 
     return (
@@ -65,9 +55,9 @@ const Login: React.FunctionComponent<RouteComponentProps<ILoginParams> & ILoginP
                 <Stack>
                     <form onSubmit={handleSubmit}>
                         <Label required={true}>E-mail</Label>
-                        <TextField type="email" onChange={handleEmailChange} />
+                        <TextField type="email" name="email" required validateOnFocusIn onChange={handleUsernameChange} />
                         <Label required={true}>Password</Label>
-                        <TextField type="password" onChange={handlePasswordChange} />
+                        <TextField type="password" name="password" required onChange={handlePasswordChange} />
                         <PrimaryButton text='Login' type="submit" />
                     </form>
                 </Stack>
@@ -76,4 +66,21 @@ const Login: React.FunctionComponent<RouteComponentProps<ILoginParams> & ILoginP
     );
 }
 
-export default withRouter(Login);
+
+const mapStateToProps = (state: StoreState) =>
+{
+    return {
+        isAuthenticated: state.client.authenticated
+    }
+}
+
+const mapDispatchToProps = (dispatch: ThunkDispatch) =>
+{
+    return {
+        handleLogin: (username:string, password: string) => dispatch(loginAsync(username, password))
+    }
+}
+
+type ILoginDispatchProps = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps>;
+
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Login));

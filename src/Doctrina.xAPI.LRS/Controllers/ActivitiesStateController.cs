@@ -4,6 +4,7 @@ using Doctrina.xAPI.Documents;
 using Doctrina.xAPI.Store.Models;
 using Doctrina.xAPI.Store.Mvc.Filters;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -18,6 +19,7 @@ namespace Doctrina.xAPI.Store.Controllers
     /// </summary>
     //[ApiAuthortize]
     //[ApiVersion]
+    [Authorize]
     [HeadWithoutBody]
     [RequiredVersionHeaderAttribute]
     [Route("xapi/activities/state")]

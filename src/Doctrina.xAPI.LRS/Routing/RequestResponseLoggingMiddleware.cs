@@ -25,18 +25,18 @@ namespace Doctrina.xAPI.Store.Routing
 
         public async Task Invoke(HttpContext context)
         {
-            if (context.Request.Path.HasValue && context.Request.Path.Value.StartsWith("/xapi/"))
+            if (context.Request.Path.HasValue && context.Request.Path.StartsWithSegments("/xapi"))
             {
                 if (context == null) throw new ArgumentNullException(nameof(context));
 
                 var sw = Stopwatch.StartNew();
                 await LogRequestAsync(context.Request);
-                await _next.Invoke(context);
+                await _next(context);
                 await LogResponseAsync(context, sw);
             }
             else
             {
-                await _next.Invoke(context);
+                await _next(context);
             }
         }
 
@@ -54,7 +54,7 @@ namespace Doctrina.xAPI.Store.Routing
             //    request.Body.CopyTo(requestStream);
             //    _logger.LogDebug($"Request Body: { ReadStreamInChunks(requestStream)}");
             //}
-            await Task.FromResult(0);
+            await Task.CompletedTask;
         }
 
         private async Task LogResponseAsync(HttpContext context, Stopwatch sw)
@@ -86,7 +86,7 @@ namespace Doctrina.xAPI.Store.Routing
             //}
             //context.Response.Body = originalBody;
 #endif
-            await Task.FromResult(0);
+            await Task.CompletedTask;
         }
 
         //private static string ReadStreamInChunks(Stream stream)

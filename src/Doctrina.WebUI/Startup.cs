@@ -2,15 +2,12 @@
 using Doctrina.Application.Infrastructure;
 using Doctrina.Application.Infrastructure.AutoMapper;
 using Doctrina.Application.Interfaces;
-using Doctrina.Application.Statements;
 using Doctrina.Application.Statements.Commands;
 using Doctrina.Domain.Identity;
 using Doctrina.Persistence;
 using Doctrina.WebUI.Filters;
 using Doctrina.xAPI.Store.Builder;
 using FluentValidation.AspNetCore;
-using IdentityServer4.Stores;
-using IdentityServer4.Test;
 using MediatR;
 using MediatR.Pipeline;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -27,14 +24,10 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Logging;
-using Microsoft.IdentityModel.Tokens;
 using NSwag.AspNetCore;
 using System;
 using System.IO;
-using System.Linq;
 using System.Reflection;
-using System.Security.Cryptography;
-using System.Security.Cryptography.X509Certificates;
 
 namespace Doctrina.WebUI
 {
@@ -72,52 +65,19 @@ namespace Doctrina.WebUI
 
             // Add DbContext using SQL Server Provider
 #if DEBUG
-            services.AddDbContext<IDoctrinaDbContext, DoctrinaDbContext>(options =>
+            services.AddDbContext<DoctrinaDbContext>(options =>
                 options.UseInMemoryDatabase("Doctrina"));
+
 #else
             services.AddDbContext<IDoctrinaDbContext, DoctrinaDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DoctrinaDatabase")));
 #endif
 
-            services.AddIdentity<ApplicationUser, IdentityRole>()
-                .AddEntityFrameworkStores<DoctrinaDbContext>()
-                .AddDefaultTokenProviders();
+            // Register the service and implementation for the database context
+            services.AddScoped<IDoctrinaDbContext>(provider => provider.GetService<DoctrinaDbContext>());
+            services.AddTransient<IDoctrinaInitializer, DoctrinaInitializer>();
 
-            // Add IdentityServer services
-            services.AddSingleton<IClientStore, CustomClientStore>();
-
-            services.AddIdentityServer()
-                .AddAspNetIdentity<ApplicationUser>()
-#if DEBUG
-                 // Can be used for testing until a real cert is available
-                .AddDeveloperSigningCredential()
-                .AddTestUsers(new TestUser[] {
-                new TestUser{  Username = "admin@example.com", Password = "adminAdmin!" } }.ToList())
-#else
-                .AddSigningCredential(new X509Certificate2(Path.Combine(".", "certs", "IdentityServer4Auth.pfx")))
-#endif
-                .AddInMemoryApiResources(MyApiResourceProvider.GetApiResources()); ;
-
-            services.Configure<IdentityOptions>(options =>
-            {
-                // Password settings.
-                options.Password.RequireDigit = true;
-                options.Password.RequireLowercase = true;
-                options.Password.RequireNonAlphanumeric = true;
-                options.Password.RequireUppercase = true;
-                options.Password.RequiredLength = 6;
-                options.Password.RequiredUniqueChars = 1;
-
-                // Lockout settings.
-                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
-                options.Lockout.MaxFailedAccessAttempts = 5;
-                options.Lockout.AllowedForNewUsers = true;
-
-                // User settings.
-                options.User.AllowedUserNameCharacters = 
-                    "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
-                options.User.RequireUniqueEmail = false;
-            });
+            ConfigureIdentity(services);
 
             // Enable the use of an [Authorize("Bearer")] attribute on methods and
             // classes to protect.
@@ -148,12 +108,37 @@ namespace Doctrina.WebUI
             services.AddLearningRecordStore();
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        private static void ConfigureIdentity(IServiceCollection services)
         {
+            services.AddIdentity<DoctrinaUser, IdentityRole>()
+                            .AddEntityFrameworkStores<DoctrinaDbContext>()
+                            .AddDefaultTokenProviders();
 
-            //loggerFactory.AddFile("Logs/doctrina-{Date}.txt");
+            services.Configure<IdentityOptions>(options =>
+            {
+                // Password settings.
+                options.Password.RequireDigit = true;
+                options.Password.RequireLowercase = true;
+                options.Password.RequireNonAlphanumeric = true;
+                options.Password.RequireUppercase = true;
+                options.Password.RequiredLength = 8;
+                options.Password.RequiredUniqueChars = 2;
 
+                // Lockout settings.
+                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
+                options.Lockout.MaxFailedAccessAttempts = 5;
+                options.Lockout.AllowedForNewUsers = true;
+
+                // User settings.
+                options.User.AllowedUserNameCharacters =
+                    "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
+                options.User.RequireUniqueEmail = false;
+            });
+        }
+
+        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, IDoctrinaInitializer initializer)
+        {
             if (env.IsDevelopment())
             {
                 _logger.LogInformation("In Development environment");
@@ -171,6 +156,16 @@ namespace Doctrina.WebUI
             // Serilog Version 3.0.0.*
             //app.UseSerilogRequestLogging();
 
+            // Handle Lets Encrypt Route (before MVC processing!)
+            app.UseRouter(r =>
+            {
+                r.MapGet(".well-known/acme-challenge/{id}", async (request, response, routeData) =>
+                {
+                    var id = routeData.Values["id"] as string;
+                    var file = Path.Combine(env.WebRootPath, ".well-known", "acme-challenge", id);
+                    await response.SendFileAsync(file);
+                });
+            });
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
@@ -208,18 +203,13 @@ namespace Doctrina.WebUI
 
             app.UseSpa(spa =>
             {
-                // To learn more about options for serving an Angular SPA from ASP.NET Core,
-                // see https://go.microsoft.com/fwlink/?linkid=864501
-
                 spa.Options.SourcePath = "ClientApp";
 
                 if (env.IsDevelopment())
                 {
                     spa.UseReactDevelopmentServer(npmScript: "start");
-                    //spa.UseProxyToSpaDevelopmentServer("http://localhost:4200");
                 }
             });
-
         }
     }
 }

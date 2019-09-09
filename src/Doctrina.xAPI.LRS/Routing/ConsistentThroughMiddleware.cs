@@ -18,7 +18,7 @@ namespace Doctrina.xAPI.Store.Routing
 
         public async Task InvokeAsync(HttpContext context, IMediator mediator)
         {
-            if (context.Request.Path.HasValue && context.Request.Path.Value.StartsWith("/xapi/"))
+            if (context.Request.Path.HasValue && context.Request.Path.StartsWithSegments("/xapi"))
             {
                 string headerKey = Headers.XExperienceApiConsistentThrough;
                 var headers = context.Response.Headers;
@@ -34,7 +34,7 @@ namespace Doctrina.xAPI.Store.Routing
             }
 
             // Execute next
-            await _next.Invoke(context);
+            await _next(context);
         }
     }
 }

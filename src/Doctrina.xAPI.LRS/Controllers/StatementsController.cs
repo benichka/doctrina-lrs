@@ -7,6 +7,7 @@ using Doctrina.xAPI.Json;
 using Doctrina.xAPI.Store.Models;
 using Doctrina.xAPI.Store.Mvc.Filters;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -22,8 +23,7 @@ namespace Doctrina.xAPI.Store.Controllers
     /// <summary>
     /// The basic communication mechanism of the Experience API.
     /// </summary>
-    //[LRSAuthortize]
-    //[ApiVersion]
+    [Authorize]
     [RequiredVersionHeader]
     [Route("xapi/statements")]
     [Produces("application/json")]

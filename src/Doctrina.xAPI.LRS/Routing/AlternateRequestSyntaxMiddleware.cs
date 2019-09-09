@@ -22,13 +22,13 @@ namespace Doctrina.xAPI.Store.Routing
             _next = next;
         }
 
-        public async Task InvokeAsync(HttpContext context)
+        public Task InvokeAsync(HttpContext context)
         {
             if(context.Request.Path.HasValue && context.Request.Path.Value.StartsWith("/xapi/"))
             {
-                await AlternateRequest(context);
+                return AlternateRequest(context);
             }
-            await _next.Invoke(context);
+            return  _next(context);
         }
 
         private async Task AlternateRequest(HttpContext context)

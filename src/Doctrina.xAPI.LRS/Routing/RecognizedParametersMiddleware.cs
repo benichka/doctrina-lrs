@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Doctrina.xAPI.Store.Exceptions;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -38,7 +39,7 @@ namespace Doctrina.xAPI.Store.Routing
 
         public async Task InvokeAsync(HttpContext context)
         {
-            if (context.Request.Path.HasValue && context.Request.Path.Value.StartsWith("/xapi/"))
+            if (context.Request.Path.HasValue && context.Request.Path.StartsWithSegments("/xapi"))
             {
                 var requestParameters = context.Request.Query.Select(x => x.Key);
 
@@ -49,12 +50,12 @@ namespace Doctrina.xAPI.Store.Routing
 
                     if (!recognizedParameters.Contains(requestParameter))
                     {
-                        throw new Exception("Unrecognized parameter: " + requestParameter);
+                        throw new BadRequestException("Unrecognized parameter: " + requestParameter);
                     }
                 }
             }
 
-            await _next.Invoke(context);
+            await _next(context);
         }
     }
 }

@@ -1,11 +1,13 @@
 ﻿using Doctrina.Application.Activities.Queries;
 using Doctrina.xAPI.Store.Mvc.Filters;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
 namespace Doctrina.xAPI.Store.Controllers
 {
+    [Authorize]
     [HeadWithoutBody]
     [RequiredVersionHeader]
     [Route("xapi/activities")]

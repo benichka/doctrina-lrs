@@ -1,5 +1,6 @@
 ﻿using Doctrina.Domain.Entities;
 using Doctrina.Domain.Entities.Documents;
+using Doctrina.Domain.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Threading;
 using System.Threading.Tasks;
@@ -27,6 +28,8 @@ namespace Doctrina.Application.Interfaces
         DbSet<ActivityProfileEntity> ActivityProfiles { get; set; }
 
         DbSet<ActivityStateEntity> ActivityStates { get; set; }
+        DbSet<DoctrinaUser> Users { get; set; }
+        DbSet<DoctrinaRole> Roles { get; set; }
 
         //DbSet<AttachmentEntity> Attachments { get; set; }
 
