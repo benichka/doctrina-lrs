@@ -110,7 +110,7 @@ namespace Doctrina.WebUI
 
         private static void ConfigureIdentity(IServiceCollection services)
         {
-            services.AddIdentity<DoctrinaUser, IdentityRole>()
+            services.AddIdentity<DoctrinaUser, DoctrinaRole>()
                             .AddEntityFrameworkStores<DoctrinaDbContext>()
                             .AddDefaultTokenProviders();
 
@@ -119,7 +119,7 @@ namespace Doctrina.WebUI
                 // Password settings.
                 options.Password.RequireDigit = true;
                 options.Password.RequireLowercase = true;
-                options.Password.RequireNonAlphanumeric = true;
+                options.Password.RequireNonAlphanumeric = false;
                 options.Password.RequireUppercase = true;
                 options.Password.RequiredLength = 8;
                 options.Password.RequiredUniqueChars = 2;
@@ -178,15 +178,15 @@ namespace Doctrina.WebUI
             });
 
 
-            // Use Cookie Policy Middleware to conform to EU General Data 
+            // Use Cookie Policy Middleware to conform to EU General Data
             // Protection Regulation (GDPR) regulations.
             app.UseCookiePolicy();
 
-            
+
 
             app.UseLearningRecordStore();
 
-            // If the app uses session state, call Session Middleware after Cookie 
+            // If the app uses session state, call Session Middleware after Cookie
             // Policy Middleware and before MVC Middleware.
             //app.UseSession();
 

@@ -1,4 +1,4 @@
-FROM microsoft/aspnetcore:2.0-nanoserver-1709 AS base
+FROM microsoft/aspnetcore:2.2 AS base
 WORKDIR /wwwroot
 EXPOSE 80
 

@@ -6,6 +6,7 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace Doctrina.Persistence
 {
@@ -14,12 +15,14 @@ namespace Doctrina.Persistence
         private readonly DoctrinaDbContext _context;
         private readonly ILogger<DoctrinaInitializer> _logger;
         private readonly ILookupNormalizer _normalizer;
+        private readonly UserManager<DoctrinaUser> _userManager;
 
-        public DoctrinaInitializer(IDoctrinaDbContext context, ILogger<DoctrinaInitializer> logger, ILookupNormalizer normalizer)
+        public DoctrinaInitializer(IDoctrinaDbContext context, ILogger<DoctrinaInitializer> logger, ILookupNormalizer normalizer, UserManager<DoctrinaUser> userManager)
         {
             _context = (DoctrinaDbContext)context;
             _logger = logger;
             _normalizer = normalizer;
+            _userManager = userManager;
         }
 
         public void SeedEverything(CancellationToken cancellationToken = default)
@@ -34,10 +37,10 @@ namespace Doctrina.Persistence
             {
                 var user = new DoctrinaUser
                 {
-                    UserName = "Admin@bitflipping.net",
-                    NormalizedUserName = _normalizer.Normalize("admin@bitflipping.net"),
-                    Email = "admin@bitflipping.net",
-                    NormalizedEmail = _normalizer.Normalize("admin@bitflipping.net"),
+                    UserName = "Admin@example.com",
+                    NormalizedUserName = _normalizer.Normalize("admin@example.com"),
+                    Email = "Admin@example.com",
+                    NormalizedEmail = _normalizer.Normalize("admin@example.com"),
                     EmailConfirmed = true,
                     LockoutEnabled = false,
                     SecurityStamp = Guid.NewGuid().ToString()
@@ -55,23 +58,17 @@ namespace Doctrina.Persistence
 
                 if (!_context.Users.Any())
                 {
-                    var password = new PasswordHasher<DoctrinaUser>();
-                    var hashed = password.HashPassword(user, "password");
-                    user.PasswordHash = hashed;
-                    using (var userStore = new UserStore<DoctrinaUser, DoctrinaRole, DoctrinaDbContext>(_context))
+                    // TODO: No default password!
+                    var result = await _userManager.CreateAsync(user, "zKR4gkYNHP5tvH");
+                    if (result.Succeeded)
                     {
-                        var result = await userStore.CreateAsync(user, cancellationToken);
-                        if (result.Succeeded)
-                        {
-                            await userStore.AddToRoleAsync(user, "admin", cancellationToken);
-                            _logger.LogDebug("Default user: {UserName} was seeded.", user.UserName);
-                        }
-                        else
-                        {
-                            _logger.LogError("Failed to seed default user.");
-                        }
+                        // await _userManager.AddToRoleAsync(user, "admin");
+                        _logger.LogDebug("Default user: {UserName} was seeded.", user.UserName);
                     }
-
+                    else
+                    {
+                        _logger.LogError("Failed to seed default user.");
+                    }
                 }
 
                 await _context.SaveChangesAsync(cancellationToken);
