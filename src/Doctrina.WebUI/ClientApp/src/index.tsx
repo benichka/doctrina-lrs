@@ -4,27 +4,27 @@ import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 import { Provider } from 'react-redux';
-import store from './store/store';
-import {BrowserRouter as Router} from 'react-router-dom';
+import AppStore from './store/AppStore';
+import { BrowserRouter as Router } from 'react-router-dom';
 import { mergeStyles } from 'office-ui-fabric-react';
 
 // Inject some global styles
 mergeStyles({
-    selectors: {
-      ':global(body), :global(html), :global(#root)': {
-        margin: 0,
-        padding: 0,
-        height: '100vh'
-      }
+  selectors: {
+    ':global(body), :global(html), :global(#root)': {
+      margin: 0,
+      padding: 0,
+      height: '100vh'
     }
-  });
+  }
+});
 
 const app = (
-    <Provider store={store}>
-        <Router>
-            <App />
-        </Router>
-    </Provider>
+  <Provider store={AppStore}>
+    <Router>
+      <App />
+    </Router>
+  </Provider>
 );
 
 ReactDOM.render(app, document.getElementById('root'));

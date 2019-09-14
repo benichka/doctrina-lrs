@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace Doctrina.xAPI.Store.Controllers
 {
-    [Area("xapi")]
     [Route("xapi/about")]
+    [ApiController]
     [Produces("application/json")]
     public class AboutController : ApiControllerBase
     {

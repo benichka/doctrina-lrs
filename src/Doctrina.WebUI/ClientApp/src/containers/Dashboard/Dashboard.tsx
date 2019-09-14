@@ -5,10 +5,7 @@ const Dashboard: React.FunctionComponent = () =>
 {
     return (
         <Stack>
-            <Text variant={"large"}>Dashboard</Text>
-            <Text>
-                Lorem
-            </Text>
+
         </Stack>
     );
 }

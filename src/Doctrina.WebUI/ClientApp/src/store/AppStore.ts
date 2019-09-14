@@ -1,7 +1,7 @@
 ﻿import { createStore, compose, Middleware, applyMiddleware, combineReducers } from "redux";
-import clientReducer from "./client/reducers";
+import authReducer from "./Auth/AuthReducer";
 import thunk, { ThunkAction, ThunkDispatch } from 'redux-thunk';
-import { ClientActionTypes } from "./client/types";
+import { AuthActionTypes } from "./Auth/AuthTypes";
 
 declare global
 {
@@ -18,20 +18,20 @@ const logger: Middleware = (state) => (next) => (action) =>
 }
 
 const rootReducer = combineReducers({
-    client: clientReducer
+    auth: authReducer
 });
 
-export type StoreState = ReturnType<typeof rootReducer>
+export type AppStoreState = ReturnType<typeof rootReducer>
 
-export type StoreActions = ClientActionTypes
+export type AppStoreActions = AuthActionTypes
 
-export type ThunkResult<R> = ThunkAction<R, StoreState, null, StoreActions>
+export type ThunkResult<R> = ThunkAction<R, AppStoreState, null, AppStoreActions>
 
-export type ThunkDispatch = ThunkDispatch<StoreState, null, StoreActions>
+export type ThunkDispatch = ThunkDispatch<AppStoreState, null, AppStoreActions>
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
-const store = createStore(rootReducer, composeEnhancers(applyMiddleware(logger, thunk)));
+const AppStore = createStore(rootReducer, composeEnhancers(applyMiddleware(logger, thunk)));
 
-export default store;
+export default AppStore;
 

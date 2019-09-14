@@ -1,21 +1,21 @@
 ﻿import { Reducer } from 'redux';
-import { ClientActionTypes, LOGIN, LOGOUT, IClientState } from './types';
+import { AuthActionTypes, AUTH_LOGIN, AUTH_LOGOUT, IAuthState } from './AuthTypes';
 
-const initialState: IClientState = {
+const initialState: IAuthState = {
     authenticated: false
 };
 
-const clientReducer: Reducer<IClientState, ClientActionTypes> = (state = initialState, action) =>
+const authReducer: Reducer<IAuthState, AuthActionTypes> = (state = initialState, action) =>
 {
     switch (action.type)
     {
-        case LOGIN: {
+        case AUTH_LOGIN: {
             return {
                 ...state,
                 authenticated: true
             };
         }
-        case LOGOUT: {
+        case AUTH_LOGOUT: {
             return {
                 ...state,
                 authenticated: false
@@ -25,4 +25,4 @@ const clientReducer: Reducer<IClientState, ClientActionTypes> = (state = initial
     return action;
 };
 
-export default clientReducer;
+export default authReducer;

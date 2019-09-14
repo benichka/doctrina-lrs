@@ -56,7 +56,6 @@ namespace Doctrina.xAPI
             if (account != null)
             {
                 GuardType(account, JTokenType.Object);
-
                 Account = new Account(account, version);
             }
         }

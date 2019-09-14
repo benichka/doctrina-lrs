@@ -1,9 +1,7 @@
-﻿using Doctrina.xAPI.Store.Mvc.ModelBinding.Providers;
+﻿using Doctrina.xAPI.Store.Controllers;
 using Doctrina.xAPI.Store.Routing;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
@@ -11,43 +9,46 @@ namespace Doctrina.xAPI.Store.Builder
 {
     public static class LearningRecordStoreBuilderExtensions
     {
+        public static IMvcBuilder AddExperienceApi(this IMvcBuilder mvcBuilder)
+        {
+            mvcBuilder
+                .AddApplicationPart(typeof(StatementsController).Assembly)
+                .AddControllersAsServices();
+
+            return mvcBuilder;
+        }
+
         public static IServiceCollection AddLearningRecordStore(this IServiceCollection services)
         {
             services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-
-            services.AddMvc(opt =>
-            {
-                // Add input formatter. This should be inserted at position 0 or else the normal json input
-                // formatter will take precedence.
-                //opt.InputFormatters.Insert(0, new StatementsInputFormatter());
-                //opt.InputFormatters.Insert(1, new StringInputFormatter());
-                //opt.InputFormatters.Insert(0, new BytesInputFormatter());
-                opt.ModelBinderProviders.Insert(0, new AgentModelBinderProvider());
-            })
-            .SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
-            .AddJsonOptions(opt =>
-            {
-                // TODO: Are these Converters required?
-                //opt.SerializerSettings.Converters.Insert(0, new UriJsonConverter());
-                //opt.SerializerSettings.Converters.Add(new LanguageMapJsonConverter());
-                opt.SerializerSettings.Formatting = Newtonsoft.Json.Formatting.None;
-                opt.SerializerSettings.DateParseHandling = Newtonsoft.Json.DateParseHandling.None;
-                opt.SerializerSettings.DateTimeZoneHandling = Newtonsoft.Json.DateTimeZoneHandling.Utc;
-                //opt.SerializerSettings.DefaultValueHandling = Newtonsoft.Json.DefaultValueHandling.Ignore;
-            });
 
             //services.AddCors();
 
             return services;
         }
 
-        public static IApplicationBuilder UseLearningRecordStore(this IApplicationBuilder builder)
+        /// <summary>
+        /// Maps required middleware for Experience API
+        /// </summary>
+        /// <param name="builder"></param>
+        /// <returns></returns>
+        public static IApplicationBuilder UseExperienceApi(this IApplicationBuilder builder)
         {
-            //app.UseStatusCodePages();
-            builder.UseMiddleware<RequestResponseLoggingMiddleware>();
-            builder.UseMiddleware<AlternateRequestMiddleware>();
-            builder.UseMiddleware<ConsistentThroughMiddleware>();
-            builder.UseMiddleware<UnrecognizedParametersMiddleware>();
+            builder.MapWhen(context => context.Request.Path.StartsWithSegments("/xapi"), xapiBuilder =>
+            {
+                xapiBuilder.UseRequestLocalization();
+
+                xapiBuilder.UseMiddleware<AlternateRequestMiddleware>();
+                xapiBuilder.UseMiddleware<ConsistentThroughMiddleware>();
+                xapiBuilder.UseMiddleware<UnrecognizedParametersMiddleware>();
+
+                xapiBuilder.UseMvc(routes =>
+                {
+                    routes.MapRoute(
+                        name: "experience_api",
+                        template: "xapi/{controller=About}");
+                });
+            });
 
             return builder;
         }

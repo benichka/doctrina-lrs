@@ -2,29 +2,29 @@
 import { ThunkAction } from 'redux-thunk';
 import
 {
-    IClientState,
-    ILoginAction,
-    ILogoutAction,
-    ICheckSignInAction
-} from './types';
+    IAuthState,
+    IAuthLoginAction,
+    IAuthLogoutAction,
+    IAuthTimeoutAction
+} from './AuthTypes';
 import
 {
-    LOGIN,
-    LOGOUT,
-    CHECK_SIGN_IN
-} from './types';
+    AUTH_LOGIN,
+    AUTH_LOGOUT,
+    AUTH_CHECK_SIGN_IN
+} from './AuthTypes';
 
-import { StoreState } from '../store';
+import { AppStoreState } from '../AppStore';
 
 
 
 /**
  * Logout action creator
  */
-const logoutAction: ActionCreator<ILogoutAction> = () =>
+const logoutAction: ActionCreator<IAuthLogoutAction> = () =>
 {
     return {
-        type: LOGOUT
+        type: AUTH_LOGOUT
     };
 };
 
@@ -32,7 +32,7 @@ const logoutAction: ActionCreator<ILogoutAction> = () =>
  * Logout async
  */
 export const logoutAsync: ActionCreator<
-    ThunkAction<Promise<void>, IClientState, null, ILogoutAction>
+    ThunkAction<Promise<void>, IAuthState, null, IAuthLogoutAction>
 > = () =>
 {
     return async (dispatch, getState) =>
@@ -51,10 +51,10 @@ export const logoutAsync: ActionCreator<
 /**
  * Login action creator
  */
-export const loginAction = (): ILoginAction =>
+export const loginAction = (): IAuthLoginAction =>
 {
     return {
-        type: LOGIN
+        type: AUTH_LOGIN
     }
 }
 
@@ -62,7 +62,7 @@ export const loginAction = (): ILoginAction =>
  * Login async
  */
 export const loginAsync: ActionCreator<
-    ThunkAction<Promise<void>, StoreState, null, ILoginAction>
+    ThunkAction<Promise<void>, AppStoreState, null, IAuthLoginAction>
 > = (username: string, password: string) =>
 {
     return async (dispatch) =>
@@ -90,19 +90,18 @@ export const loginAsync: ActionCreator<
 /**
  * Login action creator
  */
-export const checkSignInAction = (): ICheckSignInAction =>
+export const checkAuthTimeoutAction = (): IAuthTimeoutAction =>
 {
     return {
-        type: CHECK_SIGN_IN
+        type: AUTH_CHECK_SIGN_IN
     }
 }
-
 
 /**
  * Check auth async
  */
-export const checkSignInAsync: ActionCreator<
-    ThunkAction<Promise<void>, IClientState, null, ICheckSignInAction>
+export const checkAuthTimeout: ActionCreator<
+    ThunkAction<Promise<void>, IAuthState, null, IAuthTimeoutAction | IAuthLogoutAction>
 > = () =>
     {
         return async (dispatch, getState) =>
@@ -111,7 +110,9 @@ export const checkSignInAsync: ActionCreator<
             switch (result.status)
             {
                 case 200:
-                    dispatch(checkSignInAction())
+                    dispatch(checkAuthTimeoutAction());
+                case 401:
+                    dispatch(logoutAction());
             }
         }
     }

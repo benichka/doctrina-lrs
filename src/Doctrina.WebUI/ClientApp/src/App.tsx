@@ -1,28 +1,37 @@
-import React from 'react';
-import { withRouter } from "react-router-dom";
+import React, { Suspense } from 'react';
+import { withRouter, Switch, Route, Redirect } from "react-router-dom";
 import { RouteComponentProps } from 'react-router-dom';
-import Authorize from './containers/Authorize/Authorize';
+import { AppStoreState } from './store/AppStore';
+import { connect } from 'react-redux';
+import Login from './containers/Auth/Login';
+import { Spinner } from 'office-ui-fabric-react/lib/Spinner';
 
 const AsyncDashboard = React.lazy(() => import('./containers/Dashboard/Dashboard'));
-
-export interface IAppProps
-{
-}
 
 export interface IAppParams
 {
 
 }
 
-const App: React.FunctionComponent<RouteComponentProps<IAppParams> & IAppProps> = (props) =>
+const App: React.FunctionComponent<RouteComponentProps<IAppParams> & AppStateProps> = (props) =>
 {
     return (
         <React.Fragment>
-            <Authorize>
+            {props.isAuthenticated
+            ? <Suspense fallback={Spinner}>
                 <AsyncDashboard />
-            </Authorize>
+            </Suspense>
+            : <Login /> }
         </React.Fragment>
     );
 };
 
-export default withRouter(App);
+const mapStateToProps = (state: AppStoreState) => {
+    return {
+        isAuthenticated: state.auth.authenticated
+    };
+}
+
+type AppStateProps = ReturnType<RouteComponentProps<IAppParams> & typeof mapStateToProps>;
+
+export default withRouter(connect(mapStateToProps)(App));

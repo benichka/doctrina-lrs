@@ -91,7 +91,8 @@ namespace Doctrina.WebUI
 
             services.AddMvc(options => options.Filters.Add(typeof(CustomExceptionFilterAttribute)))
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
-                .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<CreateStatementsCommandValidator>());
+                .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<CreateStatementsCommandValidator>())
+                .AddExperienceApi();
 
             // Customise default API behavour
             services.Configure<ApiBehaviorOptions>(options =>
@@ -105,7 +106,7 @@ namespace Doctrina.WebUI
                 configuration.RootPath = "ClientApp/build";
             });
 
-            services.AddLearningRecordStore();
+            //services.AddLearningRecordStore();
         }
 
         private static void ConfigureIdentity(IServiceCollection services)
@@ -180,15 +181,13 @@ namespace Doctrina.WebUI
 
             // Use Cookie Policy Middleware to conform to EU General Data
             // Protection Regulation (GDPR) regulations.
-            app.UseCookiePolicy();
-
-
-
-            app.UseLearningRecordStore();
+            //app.UseCookiePolicy();
 
             // If the app uses session state, call Session Middleware after Cookie
             // Policy Middleware and before MVC Middleware.
             //app.UseSession();
+
+            app.UseExperienceApi();
 
             app.UseMvc(routes =>
             {
@@ -203,10 +202,11 @@ namespace Doctrina.WebUI
 
             app.UseSpa(spa =>
             {
-                spa.Options.SourcePath = "ClientApp";
+                spa.Options.SourcePath = "ClientApp"; 
 
                 if (env.IsDevelopment())
                 {
+                    spa.Options.StartupTimeout = TimeSpan.FromSeconds(60 * 2);
                     spa.UseReactDevelopmentServer(npmScript: "start");
                 }
             });

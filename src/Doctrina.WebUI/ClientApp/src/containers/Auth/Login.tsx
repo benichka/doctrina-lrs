@@ -1,9 +1,9 @@
 ﻿import React, { useState } from 'react';
 import { Stack, Image, ImageFit, Label, TextField, PrimaryButton } from 'office-ui-fabric-react';
 import { RouteComponentProps, withRouter } from 'react-router';
-import { loginAsync } from '../../store/client/actions';
+import { loginAsync } from '../../store/Auth/AuthActions';
 import { connect } from 'react-redux';
-import { StoreState, ThunkDispatch } from '../../store/store';
+import { AppStoreState, ThunkDispatch } from '../../store/AppStore';
 
 export interface ILoginParams
 {
@@ -67,10 +67,10 @@ const Login: React.FunctionComponent<RouteComponentProps<ILoginParams> & ILoginD
 }
 
 
-const mapStateToProps = (state: StoreState) =>
+const mapStateToProps = (state: AppStoreState) =>
 {
     return {
-        isAuthenticated: state.client.authenticated
+        isAuthenticated: state.auth.authenticated
     }
 }
 

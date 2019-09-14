@@ -1,9 +1,9 @@
 ﻿import React from 'react';
-import Login from '../Login/Login';
 import { connect } from 'react-redux';
-import { loginAsync, logoutAsync} from '../../store/client/actions';
-import { IClientState } from '../../store/client/types';
-import { ThunkDispatch } from '../../store/store';
+import { loginAsync, logoutAsync} from '../../store/Auth/AuthActions';
+import { IAuthState } from '../../store/Auth/AuthTypes';
+import { ThunkDispatch } from '../../store/AppStore';
+import { Redirect } from 'react-router-dom';
 
 export interface IAuthorizeProps
 {
@@ -15,7 +15,7 @@ const Authorize: React.FC<IAuthorizeProps & IAuthorizeDispatchProps> = (props) =
     {
         return (
             <React.Fragment>
-                <Login />
+                <Redirect to="/auth" />
             </React.Fragment>
         );
     }
@@ -27,7 +27,7 @@ const Authorize: React.FC<IAuthorizeProps & IAuthorizeDispatchProps> = (props) =
     );
 }
 
-const mapStateToProps = (state: IClientState) =>
+const mapStateToProps = (state: IAuthState) =>
 {
     return {
         isAuthenticated: state.authenticated
