@@ -7,6 +7,7 @@ using Doctrina.Domain.Identity;
 using Doctrina.Persistence;
 using Doctrina.WebUI.Filters;
 using Doctrina.xAPI.Store.Builder;
+using Doctrina.xAPI.Store.Authentication;
 using FluentValidation.AspNetCore;
 using MediatR;
 using MediatR.Pipeline;
@@ -24,7 +25,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Logging;
-using NSwag.AspNetCore;
 using System;
 using System.IO;
 using System.Reflection;
@@ -81,13 +81,11 @@ namespace Doctrina.WebUI
 
             // Enable the use of an [Authorize("Bearer")] attribute on methods and
             // classes to protect.
-            services.AddAuthorization(auth =>
-            {
-                auth.AddPolicy("Bearer", new AuthorizationPolicyBuilder()
-                    .AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme‌​)
-                    .RequireAuthenticatedUser()
-                    .Build());
-            });
+            services.AddAuthentication(options=>{
+                options.DefaultAuthenticateScheme = ExperienceApiAuthenticationOptions.DefaultScheme;
+                options.DefaultChallengeScheme = ExperienceApiAuthenticationOptions.DefaultScheme;
+            })
+                .AddExperienceApiAuthentication(options => {});
 
             services.AddMvc(options => options.Filters.Add(typeof(CustomExceptionFilterAttribute)))
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
@@ -202,7 +200,7 @@ namespace Doctrina.WebUI
 
             app.UseSpa(spa =>
             {
-                spa.Options.SourcePath = "ClientApp"; 
+                spa.Options.SourcePath = "ClientApp";
 
                 if (env.IsDevelopment())
                 {

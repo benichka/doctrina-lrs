@@ -1,4 +1,5 @@
-﻿using Doctrina.xAPI.Store.Controllers;
+﻿using Doctrina.xAPI.Store.Authentication;
+using Doctrina.xAPI.Store.Controllers;
 using Doctrina.xAPI.Store.Routing;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
@@ -7,7 +8,7 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace Doctrina.xAPI.Store.Builder
 {
-    public static class LearningRecordStoreBuilderExtensions
+    public static class ExperienceApiBuilderExtensions
     {
         public static IMvcBuilder AddExperienceApi(this IMvcBuilder mvcBuilder)
         {
@@ -20,9 +21,15 @@ namespace Doctrina.xAPI.Store.Builder
 
         public static IServiceCollection AddLearningRecordStore(this IServiceCollection services)
         {
-            services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = ExperienceApiAuthenticationOptions.DefaultScheme;
+                options.DefaultChallengeScheme = ExperienceApiAuthenticationOptions.DefaultScheme;
+            })
+            .AddExperienceApiAuthentication(options => {
+            });
 
-            //services.AddCors();
+            // services.AddAuthorization();
 
             return services;
         }
@@ -38,6 +45,8 @@ namespace Doctrina.xAPI.Store.Builder
             {
                 xapiBuilder.UseRequestLocalization();
 
+                xapiBuilder.UseAuthentication();
+
                 xapiBuilder.UseMiddleware<AlternateRequestMiddleware>();
                 xapiBuilder.UseMiddleware<ConsistentThroughMiddleware>();
                 xapiBuilder.UseMiddleware<UnrecognizedParametersMiddleware>();
@@ -48,6 +57,7 @@ namespace Doctrina.xAPI.Store.Builder
                         name: "experience_api",
                         template: "xapi/{controller=About}");
                 });
+
             });
 
             return builder;

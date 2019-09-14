@@ -1,5 +1,6 @@
 ﻿using Doctrina.xAPI.Client.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Linq;
 
 namespace Doctrina.xAPI.Store.Controllers
 {
