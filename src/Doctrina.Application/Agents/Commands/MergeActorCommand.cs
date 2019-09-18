@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Doctrina.Application.Interfaces;
 using Doctrina.Domain.Entities;
-using Doctrina.xAPI;
+using Doctrina.ExperienceApi;
 using MediatR;
 using System.Linq;
 using System.Threading;

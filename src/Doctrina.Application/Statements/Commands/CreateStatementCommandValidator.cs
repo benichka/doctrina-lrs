@@ -1,5 +1,5 @@
 ﻿using Doctrina.Application.Statements.Queries;
-using Doctrina.xAPI.Validation;
+using Doctrina.ExperienceApi.Validation;
 using FluentValidation;
 using MediatR;
 

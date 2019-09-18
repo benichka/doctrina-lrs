@@ -4,10 +4,10 @@ using Doctrina.Domain.Entities.OwnedTypes;
 namespace Doctrina.Application.Mappings.ValueResolvers
 {
     public class ExtenstionsValueResolver :
-        IMemberValueResolver<object, object, ExtensionsCollection, xAPI.ExtensionsDictionary>,
-        IMemberValueResolver<object, object, xAPI.ExtensionsDictionary, ExtensionsCollection>
+        IMemberValueResolver<object, object, ExtensionsCollection, ExperienceApi.ExtensionsDictionary>,
+        IMemberValueResolver<object, object, ExperienceApi.ExtensionsDictionary, ExtensionsCollection>
     {
-        public ExtensionsCollection Resolve(object source, object destination, xAPI.ExtensionsDictionary sourceMember, ExtensionsCollection destMember, ResolutionContext context)
+        public ExtensionsCollection Resolve(object source, object destination, ExperienceApi.ExtensionsDictionary sourceMember, ExtensionsCollection destMember, ResolutionContext context)
         {
             if(sourceMember == null)
             {
@@ -23,9 +23,9 @@ namespace Doctrina.Application.Mappings.ValueResolvers
             return collection;
         }
 
-        public xAPI.ExtensionsDictionary Resolve(object source, object destination, ExtensionsCollection sourceMember, xAPI.ExtensionsDictionary destMember, ResolutionContext context)
+        public ExperienceApi.ExtensionsDictionary Resolve(object source, object destination, ExtensionsCollection sourceMember, ExperienceApi.ExtensionsDictionary destMember, ResolutionContext context)
         {
-            var ext = new xAPI.ExtensionsDictionary();
+            var ext = new ExperienceApi.ExtensionsDictionary();
             foreach(var mem in sourceMember)
             {
                 ext.Add(mem);

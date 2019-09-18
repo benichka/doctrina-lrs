@@ -1,7 +1,7 @@
 ﻿using Doctrina.Domain.Entities;
 using Doctrina.Domain.Entities.InteractionActivities;
 using Doctrina.Persistence.ValueConverters;
-using Doctrina.xAPI.InteractionTypes;
+using Doctrina.ExperienceApi.InteractionTypes;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;

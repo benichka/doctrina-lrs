@@ -1,5 +1,5 @@
-﻿using Doctrina.xAPI;
-using Doctrina.xAPI.Documents;
+﻿using Doctrina.ExperienceApi;
+using Doctrina.ExperienceApi.Documents;
 using MediatR;
 using System;
 

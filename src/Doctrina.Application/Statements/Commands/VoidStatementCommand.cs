@@ -39,7 +39,7 @@ namespace Doctrina.Application.Statements.Commands
                 }
 
                 // Any Statement that voids another cannot itself be voided.
-                if (voidedStatement.Verb.Id == xAPI.Verbs.Voided)
+                if (voidedStatement.Verb.Id == ExperienceApi.Verbs.Voided)
                 {
                     return await Unit.Task; // Soft
                 }

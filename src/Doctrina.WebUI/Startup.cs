@@ -6,8 +6,8 @@ using Doctrina.Application.Statements.Commands;
 using Doctrina.Domain.Identity;
 using Doctrina.Persistence;
 using Doctrina.WebUI.Filters;
-using Doctrina.xAPI.Store.Builder;
-using Doctrina.xAPI.Store.Authentication;
+using Doctrina.ExperienceApi.LRS.Builder;
+using Doctrina.ExperienceApi.LRS.Authentication;
 using FluentValidation.AspNetCore;
 using MediatR;
 using MediatR.Pipeline;
@@ -62,6 +62,8 @@ namespace Doctrina.WebUI
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestPreProcessorBehavior<,>));
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestPerformanceBehaviour<,>));
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestValidationBehavior<,>));
+
+            services.AddScoped<IRequestAuthority, RequestAuthority>();
 
             // Add DbContext using SQL Server Provider
 #if DEBUG

@@ -1,8 +1,30 @@
-version: '3.4'
+version: '3.5'
+
+networks:
+  localdev:
+    name: localdev
 
 services:
   doctrina:
     image: ${DOCKER_REGISTRY}doctrina
     build:
       context: .
-      dockerfile: Doctrina.Web\Dockerfile
+      dockerfile: Doctrina.WebUI\Dockerfile
+    ports:
+      - "7000:80"
+    depends_on:
+      - db-server
+    networks:
+      - localdev
+
+  db-server:
+    image: microsoft/mssql-server-linux:2017-latest
+    container_name: db-server
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_SA_PASSWORD=Pwd12345!
+      - MSSQL_TCP_PORT=1433
+    ports:
+      - "1400:1433"
+    networks:
+      - localdev

@@ -1,15 +1,15 @@
 ﻿using AutoMapper;
 using Doctrina.Domain.Entities;
-using Doctrina.xAPI;
+using Doctrina.ExperienceApi;
 using System;
 
 namespace Doctrina.Application.Mappings.ValueResolvers
 {
     public class ObjectValueResolver :
-         IMemberValueResolver<object, object, Domain.Entities.StatementObjectEntity, xAPI.IStatementObject>,
-         IMemberValueResolver<object, object, xAPI.IStatementObject, Domain.Entities.StatementObjectEntity>
+         IMemberValueResolver<object, object, Domain.Entities.StatementObjectEntity, ExperienceApi.IStatementObject>,
+         IMemberValueResolver<object, object, ExperienceApi.IStatementObject, Domain.Entities.StatementObjectEntity>
     {
-        public xAPI.IStatementObject Resolve(object source, object destination, Domain.Entities.StatementObjectEntity sourceMember, xAPI.IStatementObject destMember, ResolutionContext context)
+        public ExperienceApi.IStatementObject Resolve(object source, object destination, Domain.Entities.StatementObjectEntity sourceMember, ExperienceApi.IStatementObject destMember, ResolutionContext context)
         {
             if (sourceMember == null)
             {
@@ -40,7 +40,7 @@ namespace Doctrina.Application.Mappings.ValueResolvers
             throw new NotImplementedException();
         }
 
-        public Domain.Entities.StatementObjectEntity Resolve(object source, object destination, xAPI.IStatementObject sourceMember, Domain.Entities.StatementObjectEntity destMember, ResolutionContext context)
+        public Domain.Entities.StatementObjectEntity Resolve(object source, object destination, ExperienceApi.IStatementObject sourceMember, Domain.Entities.StatementObjectEntity destMember, ResolutionContext context)
         {
             if (sourceMember == null)
             {
@@ -54,31 +54,31 @@ namespace Doctrina.Application.Mappings.ValueResolvers
                 if (sourceMember.ObjectType == ObjectType.Agent)
                 {
                     obj.ObjectType = EntityObjectType.Agent;
-                    obj.Agent = context.Mapper.Map<AgentEntity>((xAPI.Agent)sourceMember);
+                    obj.Agent = context.Mapper.Map<AgentEntity>((ExperienceApi.Agent)sourceMember);
                     return obj;
                 }
                 else if (sourceMember.ObjectType == ObjectType.Group)
                 {
                     obj.ObjectType = EntityObjectType.Group;
-                    obj.Agent = context.Mapper.Map<GroupEntity>((xAPI.Group)sourceMember);
+                    obj.Agent = context.Mapper.Map<GroupEntity>((ExperienceApi.Group)sourceMember);
                     return obj;
                 }
                 else if (sourceMember.ObjectType == ObjectType.Activity)
                 {
                     obj.ObjectType = EntityObjectType.Activity;
-                    obj.Activity = context.Mapper.Map<ActivityEntity>((xAPI.Activity)sourceMember);
+                    obj.Activity = context.Mapper.Map<ActivityEntity>((ExperienceApi.Activity)sourceMember);
                     return obj;
                 }
                 else if (sourceMember.ObjectType == ObjectType.SubStatement)
                 {
                     obj.ObjectType = EntityObjectType.SubStatement;
-                    obj.SubStatement = context.Mapper.Map<SubStatementEntity>((xAPI.SubStatement)sourceMember);
+                    obj.SubStatement = context.Mapper.Map<SubStatementEntity>((ExperienceApi.SubStatement)sourceMember);
                     return obj;
                 }
                 else if (sourceMember.ObjectType == ObjectType.StatementRef)
                 {
                     obj.ObjectType = EntityObjectType.StatementRef;
-                    obj.StatementRef = context.Mapper.Map<StatementRefEntity>((xAPI.StatementRef)sourceMember);
+                    obj.StatementRef = context.Mapper.Map<StatementRefEntity>((ExperienceApi.StatementRef)sourceMember);
                     return obj;
                 }
             }

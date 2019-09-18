@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Doctrina.Application.Statements.Commands;
 using Doctrina.Application.Tests.Infrastructure;
-using Doctrina.xAPI;
+using Doctrina.ExperienceApi;
 using MediatR;
 using Moq;
 using System;

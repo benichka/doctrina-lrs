@@ -2,7 +2,7 @@
 using Doctrina.Application.Interfaces;
 using Doctrina.Domain.Entities;
 using Doctrina.Domain.Entities.Extensions;
-using Doctrina.xAPI;
+using Doctrina.ExperienceApi;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System.Threading;

@@ -1,5 +1,5 @@
 ﻿using Doctrina.Domain.Entities;
-using Doctrina.xAPI;
+using Doctrina.ExperienceApi;
 using MediatR;
 
 namespace Doctrina.Application.SubStatements.Commands

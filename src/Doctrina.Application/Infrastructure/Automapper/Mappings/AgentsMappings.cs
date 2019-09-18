@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Doctrina.Application.Interfaces.Mapping;
 using Doctrina.Domain.Entities;
-using Doctrina.xAPI;
+using Doctrina.ExperienceApi;
 using Doctrina.Domain;
 
 namespace Doctrina.Application.Mappings

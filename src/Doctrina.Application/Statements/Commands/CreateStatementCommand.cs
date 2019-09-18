@@ -3,7 +3,7 @@ using Doctrina.Application.Agents.Commands;
 using Doctrina.Application.Interfaces;
 using Doctrina.Application.Verbs.Commands;
 using Doctrina.Domain.Entities;
-using Doctrina.xAPI;
+using Doctrina.ExperienceApi;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System;

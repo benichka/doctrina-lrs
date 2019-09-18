@@ -1,5 +1,6 @@
 ﻿using Doctrina.Application.Exceptions;
-using Doctrina.xAPI.Store.Exceptions;
+using Doctrina.ExperienceApi.LRS;
+using Doctrina.ExperienceApi.LRS.Exceptions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using System;

@@ -1,6 +1,6 @@
 ﻿using Doctrina.Application.Interfaces;
 using Doctrina.Application.Statements.Queries;
-using Doctrina.xAPI;
+using Doctrina.ExperienceApi;
 using MediatR;
 using System;
 using System.Threading;
