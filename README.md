@@ -37,5 +37,4 @@ Follow these steps to get your development environment set up:
 * Entity Framework Core 2.2
 
 ## License
-
 This project is licensed under the GPL-3.0 License - see the [LICENSE.md](https://github.com/doctrina-solutions/doctrina-lrs/blob/master/LICENSE.md) file for details.
