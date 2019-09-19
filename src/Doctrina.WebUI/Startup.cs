@@ -63,7 +63,7 @@ namespace Doctrina.WebUI
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestPerformanceBehaviour<,>));
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestValidationBehavior<,>));
 
-            services.AddScoped<IRequestAuthority, RequestAuthority>();
+            services.AddScoped<ICurrentAuthority, RequestAuthority>();
 
             // Add DbContext using SQL Server Provider
 #if DEBUG

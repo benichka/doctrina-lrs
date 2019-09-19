@@ -1,9 +1,9 @@
-﻿using System;
+﻿using Doctrina.ExperienceApi.Data;
+using System;
 using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
-using Doctrina.ExperienceApi;
 
 namespace Doctrina.ExperienceApi.Client.Http
 {

@@ -1,5 +1,5 @@
 ﻿using Doctrina.Application.Statements.Models;
-using Doctrina.ExperienceApi;
+using Doctrina.ExperienceApi.Data;
 using Doctrina.ExperienceApi.Client.Http;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;

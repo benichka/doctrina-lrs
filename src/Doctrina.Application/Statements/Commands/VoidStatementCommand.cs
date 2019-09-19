@@ -35,19 +35,19 @@ namespace Doctrina.Application.Statements.Commands
                 // Upon receiving a Statement that voids another, the LRS SHOULD NOT* reject the request on the grounds of the Object of that voiding Statement not being present.
                 if (voidedStatement == null)
                 {
-                    return await Unit.Task; // Soft
+                    await Task.CompletedTask; // Soft
                 }
 
                 // Any Statement that voids another cannot itself be voided.
-                if (voidedStatement.Verb.Id == ExperienceApi.Verbs.Voided)
+                if (voidedStatement.Verb.Id == ExperienceApi.Data.Verbs.Voided)
                 {
-                    return await Unit.Task; // Soft
+                    await Task.CompletedTask; // Soft
                 }
 
                 // voidedStatement has been voided, return.
                 if (voidedStatement.Voided)
                 {
-                    return await Unit.Task; // Soft
+                    await Task.CompletedTask; // Soft
                 }
 
                 voidedStatement.Voided = true;

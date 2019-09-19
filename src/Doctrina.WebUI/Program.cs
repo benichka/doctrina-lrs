@@ -19,7 +19,7 @@ namespace Doctrina.WebUI
            .SetBasePath(Directory.GetCurrentDirectory())
            .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
            .AddJsonFile($"appsettings.{Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")}.json", optional: true)
-           .AddEnvironmentVariables()
+           .AddEnvironmentVariables() // Add docker environment variables
            .Build();
 
         public static IWebHost BuildWebHost(string[] args)

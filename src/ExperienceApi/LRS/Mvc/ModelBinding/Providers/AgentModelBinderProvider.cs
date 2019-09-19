@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
+﻿using Doctrina.ExperienceApi.Data;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Binders;
 
 namespace Doctrina.ExperienceApi.LRS.Mvc.ModelBinding.Providers
@@ -15,8 +16,7 @@ namespace Doctrina.ExperienceApi.LRS.Mvc.ModelBinding.Providers
             var modelType = context.Metadata.ModelType;
             if (modelType == null) return null;
 
-            if (modelType != typeof(Agent))
-                return null;
+            if (modelType != typeof(Agent)) return null;
 
             return new BinderTypeModelBinder(typeof(AgentModelBinder));
         }

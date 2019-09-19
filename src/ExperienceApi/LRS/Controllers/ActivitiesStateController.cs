@@ -1,6 +1,7 @@
 ﻿using Doctrina.Application.ActivityStates.Commands;
 using Doctrina.Application.ActivityStates.Queries;
-using Doctrina.ExperienceApi.Documents;
+using Doctrina.ExperienceApi.Data;
+using Doctrina.ExperienceApi.Data.Documents;
 using Doctrina.ExperienceApi.LRS.Models;
 using Doctrina.ExperienceApi.LRS.Mvc.Filters;
 using MediatR;

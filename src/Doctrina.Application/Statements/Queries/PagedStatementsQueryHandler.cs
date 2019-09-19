@@ -3,7 +3,7 @@ using Doctrina.Application.Interfaces;
 using Doctrina.Application.Statements.Models;
 using Doctrina.Domain.Entities;
 using Doctrina.Domain.Entities.Extensions;
-using Doctrina.ExperienceApi;
+using Doctrina.ExperienceApi.Data;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;

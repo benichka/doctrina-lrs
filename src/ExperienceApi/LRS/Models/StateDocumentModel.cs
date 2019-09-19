@@ -1,4 +1,5 @@
-﻿using Doctrina.ExperienceApi.LRS.Mvc.ModelBinding;
+﻿using Doctrina.ExperienceApi.Data;
+using Doctrina.ExperienceApi.LRS.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc;
 using System;
 

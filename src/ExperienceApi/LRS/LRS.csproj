@@ -4,6 +4,7 @@
     <TargetFramework>netcoreapp2.2</TargetFramework>
     <RootNamespace>Doctrina.ExperienceApi.LRS</RootNamespace>
     <LangVersion>7.1</LangVersion>
+    <AssemblyName>Doctrina.ExperienceApi.LRS</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>
@@ -19,7 +20,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Doctrina.Application\Doctrina.Application.csproj" />
     <ProjectReference Include="..\Client\Client.csproj" />
-    <ProjectReference Include="..\Common\Common.csproj" />
+    <ProjectReference Include="..\Data\Data.csproj" />
   </ItemGroup>
 
 </Project>

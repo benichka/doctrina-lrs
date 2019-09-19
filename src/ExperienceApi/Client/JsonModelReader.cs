@@ -1,5 +1,6 @@
 ﻿using Doctrina.ExperienceApi.Client.Http;
-using Doctrina.ExperienceApi.Json;
+using Doctrina.ExperienceApi.Data;
+using Doctrina.ExperienceApi.Data.Json;
 using Microsoft.AspNetCore.WebUtilities;
 using System;
 using System.IO;

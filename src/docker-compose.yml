@@ -1,30 +1,36 @@
 version: '3.5'
 
 networks:
-  localdev:
-    name: localdev
+  web:
+  db:
 
 services:
   doctrina:
     image: ${DOCKER_REGISTRY}doctrina
+    container_name: doctrina-lrs
     build:
-      context: .
-      dockerfile: Doctrina.WebUI\Dockerfile
+      context: ./Doctrina.WebUI
+      dockerfile: Dockerfile
     ports:
-      - "7000:80"
+      - "5000:80"
     depends_on:
-      - db-server
+      - sql
     networks:
-      - localdev
+      - web
+      - db
 
-  db-server:
-    image: microsoft/mssql-server-linux:2017-latest
-    container_name: db-server
+  sql:
+    image: microsoft/mssql-server-linux
+    container_name: doctrina-sql
     environment:
       - ACCEPT_EULA=Y
-      - MSSQL_SA_PASSWORD=Pwd12345!
+      - SA_PASSWORD=Pwd12345!
       - MSSQL_TCP_PORT=1433
     ports:
-      - "1400:1433"
+      - "1433:1433"
+    volumes:
+      - "c:/data/mssql/data:/var/opt/mssql/data"
     networks:
-      - localdev
+      db:
+        aliases:
+          - sql

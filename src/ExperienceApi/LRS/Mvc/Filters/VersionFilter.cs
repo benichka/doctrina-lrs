@@ -1,4 +1,5 @@
 ﻿using Doctrina.ExperienceApi.Client.Http;
+using Doctrina.ExperienceApi.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using System;

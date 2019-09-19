@@ -2,7 +2,8 @@
 using Doctrina.Application.Statements.Models;
 using Doctrina.Application.Statements.Queries;
 using Doctrina.ExperienceApi.Client.Http;
-using Doctrina.ExperienceApi.Json;
+using Doctrina.ExperienceApi.Data;
+using Doctrina.ExperienceApi.Data.Json;
 using Doctrina.ExperienceApi.LRS.Models;
 using Doctrina.ExperienceApi.LRS.Mvc.Filters;
 using Doctrina.WebUI.Mvc.ModelBinders;

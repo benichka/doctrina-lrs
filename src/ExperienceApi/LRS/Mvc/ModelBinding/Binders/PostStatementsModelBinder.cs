@@ -1,4 +1,5 @@
 ﻿using Doctrina.ExperienceApi.Client;
+using Doctrina.ExperienceApi.Data;
 using Doctrina.ExperienceApi.LRS.Exceptions;
 using Doctrina.ExperienceApi.LRS.Models;
 using Microsoft.AspNetCore.Mvc.ModelBinding;

@@ -7,7 +7,7 @@ using Doctrina.Application.Interfaces;
 using Doctrina.Domain.Entities;
 using Doctrina.Domain.Entities.Documents;
 using Doctrina.Domain.Entities.Extensions;
-using Doctrina.ExperienceApi.Documents;
+using Doctrina.ExperienceApi.Data.Documents;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;

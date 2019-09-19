@@ -3,7 +3,8 @@ using Doctrina.Application.Infrastructure.Automapper.Mappings.TypeConverters;
 using Doctrina.Application.Interfaces.Mapping;
 using Doctrina.Application.Mappings.ValueResolvers;
 using Doctrina.Domain.Entities;
-using Doctrina.ExperienceApi;
+using Doctrina.ExperienceApi.Data;
+using Data = Doctrina.ExperienceApi.Data;
 using System;
 
 namespace Doctrina.Application.Mappings
@@ -31,7 +32,7 @@ namespace Doctrina.Application.Mappings
                .ForMember(ent => ent.Members, opt => opt.MapFrom(x => x.Member))
                .ReverseMap();
 
-            configuration.CreateMap<ExperienceApi.Account, Domain.Entities.Account>()
+            configuration.CreateMap<Data.Account, Domain.Entities.Account>()
                 .ForMember(ent => ent.Name, opt => opt.MapFrom(x => x.Name))
                 .ForMember(ent => ent.HomePage, opt => opt.MapFrom(x => x.HomePage.ToString()))
                 .ReverseMap();
@@ -101,7 +102,7 @@ namespace Doctrina.Application.Mappings
                 .ForMember(ent => ent.ActivityDefinitionId, opt => opt.Ignore())
                 .ForMember(ent => ent.Type, opt => opt.MapFrom(x => x.Type.ToString()))
                 .ForMember(ent => ent.Descriptions, opt => opt.MapFrom<LanguageMapValueResolver, LanguageMap>(x => x.Description))
-                .ForMember(ent => ent.Extensions, opt => opt.MapFrom<ExtenstionsValueResolver, ExperienceApi.ExtensionsDictionary>(x => x.Extensions))
+                .ForMember(ent => ent.Extensions, opt => opt.MapFrom<ExtenstionsValueResolver, ExtensionsDictionary>(x => x.Extensions))
                 .ForMember(ent => ent.MoreInfo, opt => opt.MapFrom(x => x.MoreInfo.ToString()))
                 .ForMember(ent => ent.Names, opt => opt.MapFrom<LanguageMapValueResolver, LanguageMap>(src => src.Name))
                 .ReverseMap();
@@ -113,7 +114,7 @@ namespace Doctrina.Application.Mappings
                 .ForMember(x => x.Duration, opt => opt.Ignore()/*MapFrom(x => (string)x.Duration.ToString())*/)
                 .ForMember(x => x.Response, opt => opt.MapFrom(x => x.Response))
                 .ForMember(x => x.Success, opt => opt.MapFrom(x => x.Success))
-                .ForMember(x => x.Extensions, opt => opt.MapFrom<ExtenstionsValueResolver, ExperienceApi.ExtensionsDictionary>(x => x.Extensions))
+                .ForMember(x => x.Extensions, opt => opt.MapFrom<ExtenstionsValueResolver, ExtensionsDictionary>(x => x.Extensions))
                 .ReverseMap();
 
             configuration.CreateMap<Score, ScoreEntity>()

@@ -1,6 +1,7 @@
 ﻿using Doctrina.Application.ActivityProfiles.Commands;
 using Doctrina.Application.ActivityProfiles.Queries;
-using Doctrina.ExperienceApi.Documents;
+using Doctrina.ExperienceApi.Data;
+using Doctrina.ExperienceApi.Data.Documents;
 using Doctrina.ExperienceApi.LRS.Mvc.Filters;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;

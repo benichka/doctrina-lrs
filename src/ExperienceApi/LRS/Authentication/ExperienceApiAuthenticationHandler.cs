@@ -6,15 +6,16 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System.Collections.Generic;
 using Doctrina.Application.Interfaces;
+using Doctrina.ExperienceApi.Data;
 
 namespace Doctrina.ExperienceApi.LRS.Authentication
 {
     public class ExperienceApiAuthenticationHandler : AuthenticationHandler<ExperienceApiAuthenticationOptions>
     {
-        private readonly IRequestAuthority _authority;
+        private readonly ICurrentAuthority _authority;
 
         public ExperienceApiAuthenticationHandler(
-            IOptionsMonitor<ExperienceApiAuthenticationOptions> options, ILoggerFactory logger, UrlEncoder encoder, ISystemClock clock, IRequestAuthority authority)
+            IOptionsMonitor<ExperienceApiAuthenticationOptions> options, ILoggerFactory logger, UrlEncoder encoder, ISystemClock clock, ICurrentAuthority authority)
             : base(options, logger, encoder, clock)
         {
             _authority = authority;

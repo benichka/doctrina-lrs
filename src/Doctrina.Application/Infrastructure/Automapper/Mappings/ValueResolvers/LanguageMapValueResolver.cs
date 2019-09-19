@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using Doctrina.Domain.Entities.OwnedTypes;
-using Doctrina.ExperienceApi;
+using Doctrina.ExperienceApi.Data;
 
 namespace Doctrina.Application.Mappings.ValueResolvers
 {
@@ -25,7 +25,7 @@ namespace Doctrina.Application.Mappings.ValueResolvers
 
         public LanguageMap Resolve(object source, object destination, LanguageMapCollection sourceMember, LanguageMap destMember, ResolutionContext context)
         {
-            var map = new ExperienceApi.LanguageMap();
+            var map = new LanguageMap();
             foreach(var mem in sourceMember)
             {
                 map.Add(mem);

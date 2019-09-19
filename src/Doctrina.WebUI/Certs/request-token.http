@@ -1,8 +1,0 @@
-﻿POST http://localhost:44338/connect/token HTTP/1.1
-Content-Type: application/x-www-form-urlencoded
-
-grant_type=password&username=Mike%40Contoso.com&password=MikesPassword1!&client_id=myClient&scope=myAPIs
-
-###
-POST http://localhost:44338/connect/token HTTP/1.1
-Content-Type: application/x-www-form-urlencoded

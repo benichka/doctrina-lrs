@@ -1,6 +1,7 @@
 ﻿using Doctrina.ExperienceApi.Client.Http;
-using Doctrina.ExperienceApi.Documents;
-using Doctrina.ExperienceApi.Json;
+using Doctrina.ExperienceApi.Data;
+using Doctrina.ExperienceApi.Data.Documents;
+using Doctrina.ExperienceApi.Data.Json;
 using Microsoft.AspNetCore.WebUtilities;
 using Newtonsoft.Json;
 using System;
@@ -14,6 +15,9 @@ using System.Web;
 
 namespace Doctrina.ExperienceApi.Client
 {
+    /// <summary>
+    /// LRS Client
+    /// </summary>
     public class LRSClient : ILRSClient
     {
         private readonly HttpClient client = new HttpClient();
@@ -22,11 +26,17 @@ namespace Doctrina.ExperienceApi.Client
         public Uri BaseAddress { get; }
         public ApiVersion Version { get; }
 
+        /// <summary>
+        /// Construct LRSClient with basic auth
+        /// </summary>
         public LRSClient(string endpoint, string username, string password)
             : this(endpoint, username, password, ApiVersion.GetLatest())
         {
         }
 
+        /// <summary>
+        /// Construct LRSClient with basic auth and specific version
+        /// </summary>
         public LRSClient(string endpoint, string username, string password, ApiVersion version)
         {
             BaseAddress = new Uri(endpoint.TrimEnd('/'));
@@ -39,6 +49,10 @@ namespace Doctrina.ExperienceApi.Client
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", _auth);
         }
 
+        /// <summary>
+        /// Get information about remote LRS
+        /// </summary>
+        /// <returns></returns>
         public async Task<About> GetAbout()
         {
             var relativeUri = new Uri("/about");
@@ -54,6 +68,11 @@ namespace Doctrina.ExperienceApi.Client
         }
 
         #region Statements
+        /// <summary>
+        /// Query LRS for statements
+        /// </summary>
+        /// <param name="query">Statements query</param>
+        /// <returns></returns>
         public async Task<StatementsResult> QueryStatements(StatementsQuery query)
         {
             if (query.StatementId.HasValue
@@ -77,7 +96,7 @@ namespace Doctrina.ExperienceApi.Client
         }
 
         /// <summary>
-        /// 
+        /// Get more statements
         /// </summary>
         /// <param name="result"></param>
         /// <returns></returns>

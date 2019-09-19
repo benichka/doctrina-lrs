@@ -1,5 +1,6 @@
 ﻿using Doctrina.ExperienceApi.Client.Http;
-using Doctrina.ExperienceApi.Documents;
+using Doctrina.ExperienceApi.Data;
+using Doctrina.ExperienceApi.Data.Documents;
 using System;
 using System.Threading.Tasks;
 

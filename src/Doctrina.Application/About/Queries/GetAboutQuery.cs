@@ -1,19 +1,19 @@
-﻿
-using Doctrina.ExperienceApi;
-using MediatR;
+﻿using MediatR;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace Doctrina.Application.About.Queries
 {
-    public class GetAboutQuery : IRequest<ExperienceApi.About>
+    using Doctrina.ExperienceApi.Data;
+
+    public class GetAboutQuery : IRequest<About>
     {
-        public class Handler : IRequestHandler<GetAboutQuery, ExperienceApi.About>
+        public class Handler : IRequestHandler<GetAboutQuery, About>
         {
-            public Task<ExperienceApi.About> Handle(GetAboutQuery request, CancellationToken cancellationToken)
+            public Task<About> Handle(GetAboutQuery request, CancellationToken cancellationToken)
             {
-                var about = new ExperienceApi.About()
+                var about = new About()
                 {
                     Version = ApiVersion.GetSupported().Select(x => x.Key)
                 };

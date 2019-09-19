@@ -1,4 +1,5 @@
 ﻿using Doctrina.Application.Agents.Queries;
+using Doctrina.ExperienceApi.Data;
 using Doctrina.ExperienceApi.LRS.Mvc.Filters;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;

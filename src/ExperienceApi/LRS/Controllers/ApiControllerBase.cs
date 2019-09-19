@@ -1,5 +1,6 @@
 ﻿using Doctrina.Application.Interfaces;
 using Doctrina.ExperienceApi.Client.Http;
+using Doctrina.ExperienceApi.Data;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 

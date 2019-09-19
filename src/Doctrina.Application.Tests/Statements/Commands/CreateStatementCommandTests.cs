@@ -2,6 +2,7 @@
 using Doctrina.Application.Statements.Commands;
 using Doctrina.Application.Tests.Infrastructure;
 using Doctrina.ExperienceApi;
+using Doctrina.ExperienceApi.Data;
 using MediatR;
 using Moq;
 using System;
