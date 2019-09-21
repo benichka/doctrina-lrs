@@ -20,7 +20,6 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Doctrina.Application\Doctrina.Application.csproj" />
     <ProjectReference Include="..\Client\Client.csproj" />
-    <ProjectReference Include="..\Data\Data.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,0 +1,17 @@
+trigger:
+  batch: true
+  branches:
+    include:
+    - master
+    - releases/*
+
+# Global variables
+variables:
+  configuration: Release
+
+steps:
+- script: dotnet restore
+- script: dotnet build -c $(configuration)
+
+- publish: $(System.DefaultWorkingDirectory)/bin/$(configuration)
+  artifact: NuGetPackage

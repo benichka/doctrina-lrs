@@ -6,7 +6,9 @@ networks:
 
 services:
   doctrina:
-    image: ${DOCKER_REGISTRY}doctrina
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+    image: doctrina
     container_name: doctrina-lrs
     build:
       context: ./Doctrina.WebUI
