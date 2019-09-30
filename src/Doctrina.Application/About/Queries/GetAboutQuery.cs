@@ -1,7 +1,4 @@
 ﻿using MediatR;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace Doctrina.Application.About.Queries
 {
@@ -9,17 +6,5 @@ namespace Doctrina.Application.About.Queries
 
     public class GetAboutQuery : IRequest<About>
     {
-        public class Handler : IRequestHandler<GetAboutQuery, About>
-        {
-            public Task<About> Handle(GetAboutQuery request, CancellationToken cancellationToken)
-            {
-                var about = new About()
-                {
-                    Version = ApiVersion.GetSupported().Select(x => x.Key)
-                };
-
-                return Task.FromResult(about);
-            }
-        }
     }
 }

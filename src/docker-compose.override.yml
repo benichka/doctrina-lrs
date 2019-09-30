@@ -4,6 +4,8 @@ services:
   doctrina:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://0.0.0.0:80
+      - ConnectionStrings__DoctrinaDatabase=Server=data.sql;Database=DoctrinaDb;User Id=sa;Password=Pass@word
     ports:
       - "80"
       - "443"

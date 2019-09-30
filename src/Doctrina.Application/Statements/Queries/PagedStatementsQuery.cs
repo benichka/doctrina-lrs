@@ -13,7 +13,7 @@ namespace Doctrina.Application.Statements.Queries
         [FromQuery(Name = "token")]
         public string Token { get; set; }
 
-        [FromHeader(Name = Headers.XExperienceApiVersion)]
+        [FromHeader(Name = ApiHeaders.XExperienceApiVersion)]
         public string Version { get; set; }
 
         [FromHeader(Name = "Accept-Languge")]

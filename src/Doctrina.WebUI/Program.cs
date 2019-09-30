@@ -25,6 +25,7 @@ namespace Doctrina.WebUI
         public static IWebHost BuildWebHost(string[] args)
         {
             return WebHost.CreateDefaultBuilder(args)
+                .UseKestrel()
                 .UseStartup<Startup>()
                 .ConfigureLogging((context, logging) => {
                     // Clear our default providers

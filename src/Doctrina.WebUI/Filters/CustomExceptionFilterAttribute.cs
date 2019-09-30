@@ -1,6 +1,6 @@
 ﻿using Doctrina.Application.Exceptions;
-using Doctrina.ExperienceApi.LRS;
-using Doctrina.ExperienceApi.LRS.Exceptions;
+using Doctrina.WebUI.ExperienceApi;
+using Doctrina.WebUI.ExperienceApi.Exceptions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using System;

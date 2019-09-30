@@ -5,23 +5,20 @@ networks:
   db:
 
 services:
+
   doctrina:
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Production
-    image: doctrina
+    image: doctrina:latest
     container_name: doctrina-lrs
     build:
-      context: ./Doctrina.WebUI
-      dockerfile: Dockerfile
-    ports:
-      - "5000:80"
+      context: ./
+      dockerfile: ./Doctrina.WebUI/Dockerfile
     depends_on:
-      - sql
+      - data.sql
     networks:
       - web
       - db
 
-  sql:
+  data.sql:
     image: microsoft/mssql-server-linux
     container_name: doctrina-sql
     environment:
@@ -29,9 +26,9 @@ services:
       - SA_PASSWORD=Pwd12345!
       - MSSQL_TCP_PORT=1433
     ports:
-      - "1433:1433"
+      - "5002:1433"
     volumes:
-      - "c:/data/mssql/data:/var/opt/mssql/data"
+      - "c:/doctrina/mssql/data:/var/opt/mssql/data"
     networks:
       db:
         aliases:

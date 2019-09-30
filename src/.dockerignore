@@ -7,5 +7,9 @@
 docker-compose.yml
 docker-compose.*.yml
 .user
-**/bin
+
+**/node_modules
 **/obj
+**/bin
+
+**/.env

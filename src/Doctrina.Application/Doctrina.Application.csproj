@@ -26,8 +26,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\experience-api\src\Client\Client.csproj" />
     <ProjectReference Include="..\Doctrina.Domain\Doctrina.Domain.csproj" />
-    <ProjectReference Include="..\ExperienceApi\Client\Client.csproj" />
   </ItemGroup>
 
 </Project>
