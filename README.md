@@ -10,10 +10,14 @@ You will need the following tools:
 ### Setup
 Follow these steps to get your development environment set up:
 
-  1. Clone the repository
-  2. Initialize submodules
+   1. Clone the repository
+   2. Initialize submodule in the local configuration
       ```
-      git submodule
+      git submodule init
+      ```
+   3. Fetch all data for each submodule
+      ```
+      git submodule update
       ```
 
 Next pick your development tool
