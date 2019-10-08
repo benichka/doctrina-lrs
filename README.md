@@ -41,12 +41,12 @@ Follow these steps to get your development environment set up:
 
   6. Launch [https://localhost:5001/xapi/about](https://localhost:5001/xapi/about) in your browser to view the xAPI about resource
 
-#### Visual Studio (WPI)
+#### Visual Studio (WIP)
 Follow these steps to get your development environment set up:
 1. Open the `Doctrina.sln` inside the `src` folder.
 2. Hit F5 to start from docker-compose.csproj.
 
-#### Docker Compose (WPI)
+#### Docker Compose (WIP)
 
 1. At the src directory, build the image by running:
    ```
