@@ -1,4 +1,5 @@
 ﻿using Doctrina.ExperienceApi.Client;
+using Doctrina.ExperienceApi.Client.Http;
 using Doctrina.ExperienceApi.Data;
 using Doctrina.WebUI.ExperienceApi.Exceptions;
 using Doctrina.WebUI.ExperienceApi.Models;
@@ -21,11 +22,19 @@ namespace Doctrina.WebUI.ExperienceApi.Mvc.ModelBinding
 
             var request = bindingContext.ActionContext.HttpContext.Request;
 
-            var contentType = MediaTypeHeaderValue.Parse(request.ContentType);
+            string strContentType = request.ContentType ?? MediaTypes.Application.Json;
+            // TODO: Should we assume application/json?
+            //if (string.IsNullOrEmpty(strContentType))
+            //{
+            //    bindingContext.Result = ModelBindingResult.Failed();
+            //    return;
+            //}
+
+            var mediaTypeHeaderValue = MediaTypeHeaderValue.Parse(strContentType);
 
             try
             {
-                var jsonModelReader = new JsonModelReader(contentType, request.Body);
+                var jsonModelReader = new JsonModelReader(mediaTypeHeaderValue, request.Body);
                 model.Statements = await jsonModelReader.ReadAs<StatementCollection>();
             }
             catch (JsonModelReaderException ex)
