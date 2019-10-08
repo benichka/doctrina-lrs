@@ -41,10 +41,12 @@ Follow these steps to get your development environment set up:
 
   6. Launch [https://localhost:5001/xapi/about](https://localhost:5001/xapi/about) in your browser to view the xAPI about resource
 
-#### Visual Studio (WIP)
+#### Visual Studio
 Follow these steps to get your development environment set up:
 1. Open the `Doctrina.sln` inside the `src` folder.
-2. Hit F5 to start from docker-compose.csproj.
+2. Hit `F5` or `CTRL+F5` to start from Doctrina.WebUI.csproj
+3. Launch [https://localhost:44338/](https://localhost:44338/)
+4. Launch [https://localhost:44338/xapi/about](https://localhost:44338/xapi/about) in your browser to view the xAPI about resource
 
 #### Docker Compose (WIP)
 
@@ -55,6 +57,26 @@ Follow these steps to get your development environment set up:
 2. After image has finished building, start a new container by running:
    ```
    docker run doctrina
+   ```
+
+### Testing
+After following the steps for setup, do the following to run the `lrs-conformance-test-suite`
+
+1. Within the `.\lrs-conformance-test-suite` run the following:
+   ```
+   npm install
+   ```
+1.1 If installation fails, do the following:
+   ```
+   npm update
+   ```
+1.2
+   ```
+   npm audit fix
+   ```
+2. After npm packages have been installed, run the following:
+   ```
+   node bin/console_runner.js -e https://localhost:5001 -a -u admin@example.com -p zKR4gkYNHP5tvH
    ```
 
 
