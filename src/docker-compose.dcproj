@@ -5,8 +5,10 @@
     <DockerTargetOS>Linux</DockerTargetOS>
     <ProjectGuid>09390684-6af6-4e60-b025-d6143d051b49</ProjectGuid>
     <DockerLaunchAction>LaunchBrowser</DockerLaunchAction>
-    <DockerServiceUrl>{Scheme}://{ServiceIPAddress}{ServicePort}/</DockerServiceUrl>
     <DockerServiceName>Doctrina</DockerServiceName>
+  </PropertyGroup>
+  <PropertyGroup>
+    <DockerServiceUrl>https://localhost:8081</DockerServiceUrl>
   </PropertyGroup>
   <ItemGroup>
     <None Include="docker-compose.override.yml">

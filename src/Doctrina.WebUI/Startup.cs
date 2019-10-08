@@ -141,6 +141,8 @@ namespace Doctrina.WebUI
                 _logger.LogInformation("In Development environment");
                 app.UseDeveloperExceptionPage();
                 //app.UseBrowserLink();
+                // TODO: Configure Webpack Dev Middleware
+                //app.UseWebpackDevMiddleware();
                 app.UseDatabaseErrorPage();
             }
             else
@@ -173,7 +175,6 @@ namespace Doctrina.WebUI
                 settings.Path = "/api";
                 settings.DocumentPath = "/api/specification.json";
             });
-
 
             // Use Cookie Policy Middleware to conform to EU General Data
             // Protection Regulation (GDPR) regulations.

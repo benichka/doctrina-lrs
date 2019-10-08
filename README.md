@@ -22,35 +22,31 @@ Follow these steps to get your development environment set up:
 
 Next pick your development tool
 
-#### Command line/VS Code
+#### Command line/VS Code (RECOMMENDED)
 Follow these steps to get your development environment set up:
 
-  1. At the src directory, restore required packages by running:
+  1. Within the `.\src\` directory, restore required packages by running:
      ```
-     dotnet restore
+     dotnet restore .\Doctrina.sln
      ```
   2. Next, build the solution by running:
      ```
-     dotnet build
+     dotnet build .\Doctrina.sln --no-restore
      ```
-  3. Next, within the `.\src\Doctrina.WebUI\ClientApp` directory, launch the front end by running:
+  4. Next, within the `.\src\Doctrina.WebUI\` start the server by running:
      ```
-     npm start
-     ```
-  4. Once the front end has started, within the `Doctrina.WebUI` directory, launch the back end by running:
-     ```
-	 dotnet run
-	 ```
-  5. Launch [http://localhost:52468/](http://localhost:52468/) in your browser to view the Web UI
+	  dotnet run
+	  ```
+  5. Launch [http://localhost:5000/](http://localhost:5000/) in your browser to view the React SPA
 
-  6. Launch [http://localhost:52468/api](http://localhost:52468/xapi) in your browser to view the API
+  6. Launch [https://localhost:5001/xapi/about](https://localhost:5001/xapi/about) in your browser to view the xAPI about resource
 
-#### Visual Studio
+#### Visual Studio (WPI)
 Follow these steps to get your development environment set up:
 1. Open the `Doctrina.sln` inside the `src` folder.
 2. Hit F5 to start from docker-compose.csproj.
 
-#### Docker Compose
+#### Docker Compose (WPI)
 
 1. At the src directory, build the image by running:
    ```

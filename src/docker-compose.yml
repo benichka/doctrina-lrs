@@ -8,19 +8,19 @@ services:
 
   doctrina:
     image: doctrina:latest
-    container_name: doctrina-lrs
     build:
       context: ./
       dockerfile: ./Doctrina.WebUI/Dockerfile
     depends_on:
       - data.sql
+    volumes:
+      - "c:/doctrina/app/logs:/app/logs"
     networks:
       - web
       - db
 
   data.sql:
     image: microsoft/mssql-server-linux
-    container_name: doctrina-sql
     environment:
       - ACCEPT_EULA=Y
       - SA_PASSWORD=Pwd12345!

@@ -23,15 +23,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "experience-api", "experienc
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{2F673503-5698-4EC5-99E7-4BE0F735577E}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Client", "..\experience-api\src\Client\Client.csproj", "{4AF5E6BB-094E-4ADC-9262-98957F279A50}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Client", "experience-api\src\Client\Client.csproj", "{4AF5E6BB-094E-4ADC-9262-98957F279A50}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Data", "..\experience-api\src\Data\Data.csproj", "{8C37E7E3-0FB4-443A-B87C-B84AD36CB791}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Data", "experience-api\src\Data\Data.csproj", "{8C37E7E3-0FB4-443A-B87C-B84AD36CB791}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{C367F763-7507-4793-A0EE-F55E9DEE964A}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Data.Tests", "..\experience-api\src\Tests\Data.Tests\Data.Tests.csproj", "{C3386917-528D-49B6-A8E4-D585106919B9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Data.Tests", "experience-api\src\Tests\Data.Tests\Data.Tests.csproj", "{C3386917-528D-49B6-A8E4-D585106919B9}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Client.Tests", "..\experience-api\src\Tests\Client.Tests\Client.Tests.csproj", "{CD4A7C65-C5EE-479D-8F31-6E759039A24A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Client.Tests", "experience-api\src\Tests\Client.Tests\Client.Tests.csproj", "{CD4A7C65-C5EE-479D-8F31-6E759039A24A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

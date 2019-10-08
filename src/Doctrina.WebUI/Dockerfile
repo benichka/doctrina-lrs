@@ -1,12 +1,12 @@
 ﻿
-FROM microsoft/dotnet:2.2-aspnetcore-runtime AS Base
+FROM microsoft/dotnet:2.2-aspnetcore-runtime AS runtime
 WORKDIR /app
 EXPOSE 80
 EXPOSE 443
 
 FROM microsoft/dotnet:2.2-sdk AS build
 
-# Install node and npm
+# Install node and npm on the build image
 ENV NODE_VERSION 8.12.0
 ENV NODE_DOWNLOAD_SHA 3df19b748ee2b6dfe3a03448ebc6186a3a86aeab557018d77a0f7f3314594ef6
 ENV NODE_DOWNLOAD_URL https://nodejs.org/dist/v$NODE_VERSION/node-v$NODE_VERSION-linux-x64.tar.gz
@@ -17,7 +17,7 @@ RUN wget "$NODE_DOWNLOAD_URL" -O nodejs.tar.gz \
 	&& rm nodejs.tar.gz \
 	&& ln -s /usr/local/bin/node /usr/local/bin/nodejs
 
-RUN curl -sL https://deb.nodesource.com/setup_6.x |  bash -
+RUN curl -sL https://deb.nodesource.com/setup_8.x |  bash -
 RUN apt-get install -y nodejs
 
 # Install npm packages first, this is slow so we want to minimise the number of un-cached runs
@@ -29,6 +29,10 @@ RUN npm install
 
 # Restore dotnet before build to allow for caching
 WORKDIR /
+# Copy *.csproj
+# Copy experience api for now, until stable version
+COPY experience-api/src/Data/Data.csproj /src/experience-api/src/Data/
+COPY experience-api/src/Client/Client.csproj /src/experience-api/src/Client/
 COPY Doctrina.Application/Doctrina.Application.csproj /src/Doctrina.Application/
 COPY Doctrina.Common/Doctrina.Common.csproj /src/Doctrina.Common/
 COPY Doctrina.Domain/Doctrina.Domain.csproj /src/Doctrina.Domain/
@@ -45,6 +49,6 @@ RUN dotnet build /src/Doctrina.WebUI/Doctrina.WebUI.csproj --no-restore -c Relea
 RUN dotnet publish /src/Doctrina.WebUI/Doctrina.WebUI.csproj --no-restore -c Release -o /app
 
 # Copy compiled app to runtime container
-FROM base AS final
+FROM runtime AS final
 COPY --from=build /app .
 CMD ["dotnet", "Doctrina.WebUI.dll"]
