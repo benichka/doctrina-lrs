@@ -1,12 +1,12 @@
 ﻿using AutoMapper;
-using Doctrina.Application.Interfaces;
+using Doctrina.Application.Common.Interfaces;
 using Doctrina.Domain.Entities;
+using Doctrina.Domain.Entities.Extensions;
 using Doctrina.ExperienceApi.Data;
 using MediatR;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Doctrina.Domain.Entities.Extensions;
 
 namespace Doctrina.Application.Agents.Commands
 {

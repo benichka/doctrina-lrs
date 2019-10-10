@@ -1,94 +1,53 @@
-﻿using AutoMapper;
-using Doctrina.Application.Infrastructure;
-using Doctrina.Application.Infrastructure.AutoMapper;
-using Doctrina.Application.Interfaces;
+﻿using Doctrina.Application;
 using Doctrina.Application.Statements.Commands;
-using Doctrina.Domain.Identity;
+using Doctrina.Infrastructure;
 using Doctrina.Persistence;
-using Doctrina.WebUI.ExperienceApi.Authentication;
 using Doctrina.WebUI.ExperienceApi.Builder;
 using Doctrina.WebUI.Filters;
 using FluentValidation.AspNetCore;
-using MediatR;
-using MediatR.Pipeline;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System;
 using System.IO;
-using System.Reflection;
 
 namespace Doctrina.WebUI
 {
     public class Startup
     {
-        private readonly IConfiguration Configuration;
         private readonly ILogger _logger;
+        public readonly IConfiguration Configuration;
+        public readonly IWebHostEnvironment Environment;
 
-        public Startup(IConfiguration configuration, ILogger<Startup> logger)
+        public Startup(IConfiguration configuration, IWebHostEnvironment environment, ILogger<Startup> logger)
         {
             Configuration = configuration;
+            Environment = environment;
             _logger = logger;
         }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            // Add AutoMapper
-            services.AddAutoMapper(new Assembly[] { typeof(AutoMapperProfile).GetTypeInfo().Assembly });
+            services.AddInfrastructure(Configuration, Environment);
+            services.AddPersistence(Configuration);
+            services.AddApplication();
 
-            //services.AddCustomMapper();
+            services.AddHealthChecks()
+              .AddDbContextCheck<DoctrinaDbContext>();
 
-            // Add framework services.
-            //services.AddTransient<INotificationService, NotificationService>();
-            //services.AddTransient<IDateTime, MachineDateTime>();
+            services.AddHttpContextAccessor();
 
-            // Add httpcontext
-            services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-
-            // Add MediatR
-            services.AddMediatR(typeof(CreateStatementCommand).GetTypeInfo().Assembly);
-            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestPreProcessorBehavior<,>));
-            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestPerformanceBehaviour<,>));
-            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestValidationBehavior<,>));
-
-            services.AddScoped<ICurrentAuthority, RequestAuthority>();
-
-            // Add DbContext using SQL Server Provider
-#if DEBUG
-            services.AddDbContext<DoctrinaDbContext>(options =>
-                options.UseInMemoryDatabase("Doctrina"));
-
-#else
-            services.AddDbContext<IDoctrinaDbContext, DoctrinaDbContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("DoctrinaDatabase")));
-#endif
-
-            // Register the service and implementation for the database context
-            services.AddScoped<IDoctrinaDbContext>(provider => provider.GetService<DoctrinaDbContext>());
-            services.AddTransient<IDoctrinaInitializer, DoctrinaInitializer>();
-
-            ConfigureIdentity(services);
-
-            // Enable the use of an [Authorize("Bearer")] attribute on methods and
-            // classes to protect.
-            services.AddAuthentication(options=>{
-                options.DefaultAuthenticateScheme = ExperienceApiAuthenticationOptions.DefaultScheme;
-                options.DefaultChallengeScheme = ExperienceApiAuthenticationOptions.DefaultScheme;
-            })
-                .AddExperienceApiAuthentication(options => {});
-
-            services.AddMvc(options => options.Filters.Add(typeof(CustomExceptionFilterAttribute)))
-                .SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
+            services.AddControllers(options => options.Filters.Add(typeof(CustomExceptionFilterAttribute)))
+                .AddNewtonsoftJson()
                 .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<CreateStatementsCommandValidator>())
                 .AddExperienceApi();
 
@@ -103,54 +62,32 @@ namespace Doctrina.WebUI
             {
                 configuration.RootPath = "ClientApp/build";
             });
-        }
 
-        private static void ConfigureIdentity(IServiceCollection services)
-        {
-            services.AddIdentity<DoctrinaUser, DoctrinaRole>()
-                            .AddEntityFrameworkStores<DoctrinaDbContext>()
-                            .AddDefaultTokenProviders();
-
-            services.Configure<IdentityOptions>(options =>
+            services.AddOpenApiDocument(configure =>
             {
-                // Password settings.
-                options.Password.RequireDigit = true;
-                options.Password.RequireLowercase = true;
-                options.Password.RequireNonAlphanumeric = false;
-                options.Password.RequireUppercase = true;
-                options.Password.RequiredLength = 8;
-                options.Password.RequiredUniqueChars = 2;
-
-                // Lockout settings.
-                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
-                options.Lockout.MaxFailedAccessAttempts = 5;
-                options.Lockout.AllowedForNewUsers = true;
-
-                // User settings.
-                options.User.AllowedUserNameCharacters =
-                    "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
-                options.User.RequireUniqueEmail = false;
+                configure.Title = "Doctrina LRS API";
             });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, IDoctrinaInitializer initializer)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
-                _logger.LogInformation("In Development environment");
                 app.UseDeveloperExceptionPage();
+                app.UseDatabaseErrorPage();
+                _logger.LogInformation("In Development environment");
                 //app.UseBrowserLink();
                 // TODO: Configure Webpack Dev Middleware
                 //app.UseWebpackDevMiddleware();
-                app.UseDatabaseErrorPage();
             }
             else
             {
-                //app.UseExceptionHandler("/error");
+                app.UseExceptionHandler("/error");
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+
 
             // Serilog Version 3.0.0.*
             //app.UseSerilogRequestLogging();
@@ -166,14 +103,18 @@ namespace Doctrina.WebUI
                 });
             });
 
+            //app.UseCustomExceptionHandler();
+            app.UseHealthChecks("/health");
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
 
+            app.UseOpenApi();
+
             app.UseSwaggerUi3(settings =>
             {
                 settings.Path = "/api";
-                settings.DocumentPath = "/api/specification.json";
+                //settings.DocumentPath = "/api/specification.json";
             });
 
             // Use Cookie Policy Middleware to conform to EU General Data
@@ -184,17 +125,22 @@ namespace Doctrina.WebUI
             // Policy Middleware and before MVC Middleware.
             //app.UseSession();
 
-            app.UseExperienceApi();
+            app.UseRouting();
 
-            app.UseMvc(routes =>
+            app.UseAuthentication();
+            app.UseIdentityServer();
+            app.UseAuthorization();
+
+            app.UseExperienceApiEndpoints();
+            app.UseEndpoints(endpoints =>
             {
-                routes.MapRoute(
+                endpoints.MapControllerRoute(
                     name: "default",
-                    template: "{controller=home}/{action=index}/{id?}");
-
-                routes.MapSpaFallbackRoute(
-                    name: "spa-fallback",
-                    defaults: new { controller = "Home", action = "Index" });
+                    pattern: "{controller}/{action=index}/{id?}");
+                endpoints.MapControllers();
+                //endpoints.MapSpaFallbackRoute(
+                //    name: "spa-fallback",
+                //    defaults: new { controller = "Home", action = "Index" });
             });
 
             app.UseSpa(spa =>

@@ -1,4 +1,5 @@
-﻿using Doctrina.Application.Interfaces;
+﻿using Doctrina.Application.Common.Interfaces;
+using Doctrina.Application.Interfaces;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System;

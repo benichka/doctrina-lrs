@@ -73,6 +73,9 @@ namespace Doctrina.WebUI.ExperienceApi.Controllers
         //[AcceptVerbs("GET", "HEAD")]
         [HttpGet(Order = 2)]
         [Produces("application/json")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(Microsoft.AspNetCore.Mvc.ModelBinding.ModelStateDictionary), StatusCodes.Status400BadRequest)]
+        [ProducesDefaultResponseType]
         public async Task<ActionResult> GetAgentProfilesAsync([FromQuery(Name = "agent")]string strAgent, DateTimeOffset? since = null)
         {
             if (string.IsNullOrWhiteSpace(strAgent))
@@ -81,7 +84,9 @@ namespace Doctrina.WebUI.ExperienceApi.Controllers
             }
 
             if (!ModelState.IsValid)
+            {
                 return BadRequest(ModelState);
+            }
 
             Agent agent = new Agent(strAgent);
 

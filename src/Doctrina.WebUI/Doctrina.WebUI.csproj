@@ -1,46 +1,38 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
+    <RootNamespace>Doctrina.WebUI</RootNamespace>
+    <AssemblyName>Doctrina.WebUI</AssemblyName>
     <DockerComposeProjectPath>..\docker-compose.dcproj</DockerComposeProjectPath>
-    <UserSecretsId>8aa2c0ea-2238-43fd-ab68-bc6475061db1</UserSecretsId>
-    <StartupObject></StartupObject>
-    <ApplicationIcon />
-    <OutputType>Exe</OutputType>
     <Company>Bitflipping</Company>
-    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <PackageLicenseUrl>https://www.gnu.org/licenses/gpl-3.0.html</PackageLicenseUrl>
     <LangVersion>7.1</LangVersion>
     <TypeScriptToolsVersion>Latest</TypeScriptToolsVersion>
     <SpaRoot>ClientApp\</SpaRoot>
+    <DefaultItemExcludes>$(DefaultItemExcludes);$(SpaRoot)node_modules\**</DefaultItemExcludes>
      <!-- Set this to true if you enable server-side prerendering -->
     <BuildServerSideRenderer>false</BuildServerSideRenderer>
+    <UserSecretsId>8aa2c0ea-2238-43fd-ab68-bc6475061db1</UserSecretsId>
+    <Configurations>Debug;Release;Test</Configurations>
+    <IncludeOpenAPIAnalyzers>true</IncludeOpenAPIAnalyzers>
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="%2a%2a\**" />
-    <Compile Remove="ClientApp\src\store\actions\**" />
-    <Compile Remove="ClientApp\src\store\reducers\**" />
-    <Content Remove="%2a%2a\**" />
-    <Content Remove="ClientApp\src\store\actions\**" />
-    <Content Remove="ClientApp\src\store\reducers\**" />
-    <EmbeddedResource Remove="%2a%2a\**" />
-    <EmbeddedResource Remove="ClientApp\src\store\actions\**" />
-    <EmbeddedResource Remove="ClientApp\src\store\reducers\**" />
-    <None Remove="%2a%2a\**" />
-    <None Remove="ClientApp\src\store\actions\**" />
-    <None Remove="ClientApp\src\store\reducers\**" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="7.0.0" />
-    <PackageReference Include="FluentValidation.AspNetCore" Version="8.4.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="3.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.ApiAuthorization.IdentityServer" Version="3.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="3.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="3.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.0.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Extensions.Diagnostics.HealthChecks.EntityFrameworkCore" Version="3.0.0" />
+    <PackageReference Include="FluentValidation.AspNetCore" Version="8.5.0" />
     <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="7.0.0" />
-    <PackageReference Include="Microsoft.AspNetCore.All" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="2.2.6" />
-    <PackageReference Include="Microsoft.IdentityModel.JsonWebTokens" Version="5.5.0" />
-    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.2.3" />
-    <PackageReference Include="NSwag.AspNetCore" Version="13.0.6" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.0.0" />
+    
     <PackageReference Include="Serilog" Version="2.8.0" />
     <PackageReference Include="Serilog.AspNetCore" Version="3.0.0" />
     <PackageReference Include="Serilog.Extensions.Logging" Version="3.0.1" />
@@ -49,10 +41,13 @@
     <PackageReference Include="Serilog.Settings.Configuration" Version="3.1.0" />
     <PackageReference Include="Serilog.Sinks.Console" Version="3.1.1" />
     <PackageReference Include="Serilog.Sinks.File" Version="4.0.0" />
-  </ItemGroup>
 
-  <ItemGroup>
-    <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.4" />
+    <PackageReference Include="NSwag.AspNetCore" Version="13.1.3" />
+    <PackageReference Include="NSwag.Core" Version="13.1.3" />
+    <PackageReference Include="NSwag.MSBuild" Version="13.1.3">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
   </ItemGroup>
 
   <ItemGroup>
@@ -62,12 +57,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Remove="package-lock.json" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\Doctrina.Common\Doctrina.Common.csproj" />
     <ProjectReference Include="..\Doctrina.Application\Doctrina.Application.csproj" />
+    <ProjectReference Include="..\Doctrina.Infrastructure\Doctrina.Infrastructure.csproj" />
     <ProjectReference Include="..\Doctrina.Persistence\Doctrina.Persistence.csproj" />
   </ItemGroup>
 
@@ -78,14 +70,15 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="ExperienceApi\Infrastructure\" />
+    <Folder Include="Controllers\" />
+    <Folder Include="Logs\" />
   </ItemGroup>
-
-  <!-- <Target Name="NSwag" AfterTargets="Build" Condition="'$(Configuration)' == 'Debug'">
+  
+  <Target Name="NSwag" AfterTargets="Build" Condition="'$(Configuration)' == 'Debug'">
     <Copy SourceFiles="@(Reference)" DestinationFolder="$(OutDir)References" />
-    <Exec Command="$(NSwagExe_Core22) run /variables:Configuration=$(Configuration)" />
+    <Exec Command="$(NSwagExe_Core30) run /variables:Configuration=$(Configuration) /runtime:NetCore30" />
     <RemoveDir Directories="$(OutDir)References" />
-  </Target> -->
+  </Target>
 
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">
     <!-- Ensure Node.js is installed -->
@@ -105,7 +98,7 @@
 
     <!-- Include the newly-built files in the publish output -->
     <ItemGroup>
-      <DistFiles Include="$(SpaRoot)dist\**; $(SpaRoot)dist-server\**" />
+      <DistFiles Include="$(SpaRoot)build\**; $(SpaRoot)dist-server\**" />
       <DistFiles Include="$(SpaRoot)node_modules\**" Condition="'$(BuildServerSideRenderer)' == 'true'" />
       <ResolvedFileToPublish Include="@(DistFiles->'%(FullPath)')" Exclude="@(ResolvedFileToPublish)">
         <RelativePath>%(DistFiles.Identity)</RelativePath>

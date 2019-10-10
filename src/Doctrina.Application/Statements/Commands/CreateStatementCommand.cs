@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using Doctrina.Application.Agents.Commands;
-using Doctrina.Application.Interfaces;
+using Doctrina.Application.Common.Interfaces;
 using Doctrina.Application.Verbs.Commands;
 using Doctrina.Domain.Entities;
 using Doctrina.ExperienceApi.Data;

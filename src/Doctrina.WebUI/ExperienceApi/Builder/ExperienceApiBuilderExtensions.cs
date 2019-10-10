@@ -39,7 +39,7 @@ namespace Doctrina.WebUI.ExperienceApi.Builder
         /// </summary>
         /// <param name="builder"></param>
         /// <returns></returns>
-        public static IApplicationBuilder UseExperienceApi(this IApplicationBuilder builder)
+        public static IApplicationBuilder UseExperienceApiEndpoints(this IApplicationBuilder builder)
         {
             builder.MapWhen(context => context.Request.Path.StartsWithSegments("/xapi"), xapiBuilder =>
             {
@@ -51,11 +51,13 @@ namespace Doctrina.WebUI.ExperienceApi.Builder
                 xapiBuilder.UseMiddleware<ConsistentThroughMiddleware>();
                 xapiBuilder.UseMiddleware<UnrecognizedParametersMiddleware>();
 
-                xapiBuilder.UseMvc(routes =>
+                xapiBuilder.UseRouting();
+
+                xapiBuilder.UseEndpoints(routes =>
                 {
-                    routes.MapRoute(
+                    routes.MapControllerRoute(
                         name: "experience_api",
-                        template: "xapi/{controller=About}");
+                        pattern: "xapi/{controller=About}");
                 });
 
             });

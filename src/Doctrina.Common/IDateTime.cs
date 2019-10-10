@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Doctrina.WebUI.Controllers
+namespace Doctrina.Common
 {
-    public class TokenController
+    public interface IDateTime
     {
-        
+        DateTime Now { get; }
     }
 }

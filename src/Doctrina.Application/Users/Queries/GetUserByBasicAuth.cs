@@ -6,7 +6,7 @@ using System;
 namespace Doctrina.Application.Security.Queries
 {
 
-    public class GetUserByBasicAuth : IRequest<DoctrinaUser>
+    public class GetUserByBasicAuth
     {
 
         public GetUserByBasicAuth(string basicAuth)

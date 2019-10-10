@@ -1,4 +1,5 @@
-﻿using Doctrina.Application.Interfaces;
+﻿using Doctrina.Application.Common.Interfaces;
+using Doctrina.Application.Interfaces;
 using Doctrina.Application.Statements.Queries;
 using Doctrina.ExperienceApi.Data;
 using MediatR;

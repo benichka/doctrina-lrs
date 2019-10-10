@@ -3,6 +3,7 @@ using Doctrina.Application.Activities.Commands;
 using Doctrina.Application.ActivityStates.Commands;
 using Doctrina.Application.ActivityStates.Queries;
 using Doctrina.Application.Agents.Commands;
+using Doctrina.Application.Common.Interfaces;
 using Doctrina.Application.Interfaces;
 using Doctrina.Domain.Entities;
 using Doctrina.Domain.Entities.Documents;

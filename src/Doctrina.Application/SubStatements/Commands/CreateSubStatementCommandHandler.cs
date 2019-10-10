@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Doctrina.Application.Agents.Commands;
+using Doctrina.Application.Common.Interfaces;
 using Doctrina.Application.Interfaces;
 using Doctrina.Application.SubStatements.Commands;
 using Doctrina.Application.Verbs.Commands;

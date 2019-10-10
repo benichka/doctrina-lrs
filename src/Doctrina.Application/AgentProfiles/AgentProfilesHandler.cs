@@ -2,6 +2,7 @@
 using Doctrina.Application.AgentProfiles.Commands;
 using Doctrina.Application.AgentProfiles.Queries;
 using Doctrina.Application.Agents.Commands;
+using Doctrina.Application.Common.Interfaces;
 using Doctrina.Application.Interfaces;
 using Doctrina.Domain.Entities;
 using Doctrina.Domain.Entities.Documents;

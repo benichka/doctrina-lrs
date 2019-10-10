@@ -1,7 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System;
+﻿using System;
 using System.Security.Cryptography;
-using System.Text;
 
 namespace Doctrina.Domain.Entities.Documents
 {

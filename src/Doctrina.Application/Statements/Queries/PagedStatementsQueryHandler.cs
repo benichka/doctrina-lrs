@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Doctrina.Application.Common.Interfaces;
 using Doctrina.Application.Interfaces;
 using Doctrina.Application.Statements.Models;
 using Doctrina.Domain.Entities;

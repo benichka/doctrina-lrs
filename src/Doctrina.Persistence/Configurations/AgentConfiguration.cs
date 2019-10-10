@@ -30,13 +30,16 @@ namespace Doctrina.Persistence.Configurations
             builder.Property(e => e.OpenId)
                .HasColumnName("OpenId");
 
-            builder.OwnsOne(e => e.Account, a =>
-            {
-                a.Property(x => x.HomePage);
-                a.Property(x => x.Name);
+            builder.HasOne(x => x.Account)
+                .WithMany();
 
-                a.HasIndex(x => new { x.HomePage, x.Name });
-            });
+            //builder.OwnsOne(e => e.Account, a =>
+            //{
+            //    a.Property(x => x.HomePage);
+            //    a.Property(x => x.Name);
+
+            //    a.HasIndex(x => new { x.HomePage, x.Name });
+            //});
 
             builder
                 .HasIndex(x => new { x.ObjectType, x.Mbox })

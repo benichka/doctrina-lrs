@@ -1,6 +1,7 @@
 ﻿using Doctrina.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using System;
 
 namespace Doctrina.Persistence.Configurations
 {
@@ -8,6 +9,9 @@ namespace Doctrina.Persistence.Configurations
     {
         public void Configure(EntityTypeBuilder<Account> builder)
         {
+            builder.Property<Guid>("AccountId");
+            builder.HasKey("AccountId");
+
             builder.Property(e => e.HomePage)
                 .HasMaxLength(Constants.MAX_URL_LENGTH);
 

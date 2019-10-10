@@ -4,8 +4,8 @@ Use these instructions to get the project up and running.
 ### Prerequisites
 You will need the following tools:
 
-* [Visual Studio Code or 2017](https://www.visualstudio.com/downloads/)
-* [.NET Core SDK 2.2](https://www.microsoft.com/net/download/dotnet-core/2.2)
+* [Visual Studio Code or 2019](https://www.visualstudio.com/downloads/)
+* [.NET Core SDK 3.0](https://www.microsoft.com/net/download/dotnet-core/3.0)
 
 ### Setup
 Follow these steps to get your development environment set up:
@@ -48,6 +48,8 @@ Follow these steps to get your development environment set up:
 3. Launch [https://localhost:44338/](https://localhost:44338/)
 4. Launch [https://localhost:44338/xapi/about](https://localhost:44338/xapi/about) in your browser to view the xAPI about resource
 
+5. Try posting a statem
+
 #### Docker Compose (WIP)
 
 1. At the src directory, build the image by running:
@@ -81,10 +83,12 @@ After following the steps for setup, do the following to run the `lrs-conformanc
 
 
 ## Technologies
-* .NET Core 2.2
-* ASP.NET Core 2.2
-* Entity Framework Core 2.2
+* .NET Core 3.0
+* ASP.NET Core 3.0
+* Entity Framework Core 3.0
 * NodeJS
+* React
+* Office React Fabric UI
 
 ## License
 This project is licensed under the GPL-3.0 License - see the [LICENSE](https://github.com/bitflipping-solutions/doctrina-lrs/blob/develop/LICENSE) file for details.

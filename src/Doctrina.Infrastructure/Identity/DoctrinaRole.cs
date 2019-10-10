@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 
-namespace Doctrina.Domain.Identity
+namespace Doctrina.Infrastructure.Identity
 {
     public class DoctrinaRole : IdentityRole<string>
     {

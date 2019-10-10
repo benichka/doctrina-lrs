@@ -2,7 +2,7 @@
 using Doctrina.Application.Activities.Commands;
 using Doctrina.Application.ActivityProfiles.Commands;
 using Doctrina.Application.ActivityProfiles.Queries;
-using Doctrina.Application.Interfaces;
+using Doctrina.Application.Common.Interfaces;
 using Doctrina.Domain.Entities.Documents;
 using Doctrina.ExperienceApi.Data;
 using Doctrina.ExperienceApi.Data.Documents;

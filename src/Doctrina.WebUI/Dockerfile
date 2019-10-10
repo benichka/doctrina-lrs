@@ -1,10 +1,9 @@
-﻿
-FROM microsoft/dotnet:2.2-aspnetcore-runtime AS runtime
+﻿FROM microsoft/dotnet:3.0-aspnetcore-runtime AS runtime
 WORKDIR /app
 EXPOSE 80
 EXPOSE 443
 
-FROM microsoft/dotnet:2.2-sdk AS build
+FROM microsoft/dotnet:3.0-sdk AS build
 
 # Install node and npm on the build image
 ENV NODE_VERSION 8.12.0

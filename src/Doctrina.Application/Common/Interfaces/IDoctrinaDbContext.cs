@@ -1,11 +1,10 @@
 ﻿using Doctrina.Domain.Entities;
 using Doctrina.Domain.Entities.Documents;
-using Doctrina.Domain.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Doctrina.Application.Interfaces
+namespace Doctrina.Application.Common.Interfaces
 {
     public interface IDoctrinaDbContext
     {
@@ -17,8 +16,6 @@ namespace Doctrina.Application.Interfaces
         DbSet<AgentProfileEntity> AgentProfiles { get; set; }
         DbSet<ActivityProfileEntity> ActivityProfiles { get; set; }
         DbSet<ActivityStateEntity> ActivityStates { get; set; }
-        DbSet<DoctrinaUser> Users { get; set; }
-        DbSet<DoctrinaRole> Roles { get; set; }
         Task<int> SaveChangesAsync(CancellationToken cancellationToken);
     }
 }

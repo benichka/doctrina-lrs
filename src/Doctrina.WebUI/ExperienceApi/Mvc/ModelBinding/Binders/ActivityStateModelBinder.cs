@@ -50,7 +50,7 @@ namespace Doctrina.WebUI.ExperienceApi.Mvc.ModelBinding
             return Task.CompletedTask;
         }
 
-        public bool IsValidJson(string jsonString)
+        public static bool IsValidJson(string jsonString)
         {
             try
             {

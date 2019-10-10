@@ -1,6 +1,5 @@
-﻿using System.Collections.Generic;
-using Doctrina.Domain.Infrastructure;
-using Microsoft.EntityFrameworkCore;
+﻿using Doctrina.Domain.Infrastructure;
+using System.Collections.Generic;
 
 namespace Doctrina.Domain.Entities
 {

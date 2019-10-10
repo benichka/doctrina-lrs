@@ -8,7 +8,7 @@ namespace Doctrina.Persistence.Configurations
     {
         public void Configure(EntityTypeBuilder<GroupEntity> builder)
         {
-            builder.ToTable("Groups");
+            //builder.ToTable("Groups");
 
             builder.HasBaseType<AgentEntity>();
 
