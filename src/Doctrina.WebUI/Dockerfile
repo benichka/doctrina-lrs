@@ -1,9 +1,9 @@
-﻿FROM microsoft/dotnet:3.0-aspnetcore-runtime AS runtime
+﻿FROM mcr.microsoft.com/dotnet/core/aspnet:3.0 AS runtime
 WORKDIR /app
 EXPOSE 80
 EXPOSE 443
 
-FROM microsoft/dotnet:3.0-sdk AS build
+FROM mcr.microsoft.com/dotnet/core/sdk:3.0 AS build
 
 # Install node and npm on the build image
 ENV NODE_VERSION 8.12.0
@@ -16,7 +16,7 @@ RUN wget "$NODE_DOWNLOAD_URL" -O nodejs.tar.gz \
 	&& rm nodejs.tar.gz \
 	&& ln -s /usr/local/bin/node /usr/local/bin/nodejs
 
-RUN curl -sL https://deb.nodesource.com/setup_8.x |  bash -
+RUN curl -sL https://deb.nodesource.com/setup_8.x | bash -
 RUN apt-get install -y nodejs
 
 # Install npm packages first, this is slow so we want to minimise the number of un-cached runs
