@@ -23,15 +23,13 @@ namespace Doctrina.WebUI
 {
     public class Startup
     {
-        private readonly ILogger _logger;
         public readonly IConfiguration Configuration;
         public readonly IWebHostEnvironment Environment;
 
-        public Startup(IConfiguration configuration, IWebHostEnvironment environment, ILogger<Startup> logger)
+        public Startup(IConfiguration configuration, IWebHostEnvironment environment)
         {
             Configuration = configuration;
             Environment = environment;
-            _logger = logger;
         }
 
         // This method gets called by the runtime. Use this method to add services to the container.
@@ -76,7 +74,6 @@ namespace Doctrina.WebUI
             {
                 app.UseDeveloperExceptionPage();
                 app.UseDatabaseErrorPage();
-                _logger.LogInformation("In Development environment");
                 //app.UseBrowserLink();
                 // TODO: Configure Webpack Dev Middleware
                 //app.UseWebpackDevMiddleware();

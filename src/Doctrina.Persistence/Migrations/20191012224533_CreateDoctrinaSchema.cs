@@ -3,33 +3,21 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Doctrina.Persistence.Migrations
 {
-    public partial class CreateTables : Migration
+    public partial class CreateDoctrinaSchema : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Agents",
+                name: "Account",
                 columns: table => new
                 {
-                    AgentHash = table.Column<string>(nullable: false),
-                    ObjectType = table.Column<int>(nullable: false),
-                    Name = table.Column<string>(maxLength: 100, nullable: true),
-                    Mbox = table.Column<string>(maxLength: 128, nullable: true),
-                    Mbox_SHA1SUM = table.Column<string>(maxLength: 40, nullable: true),
-                    OpenId = table.Column<string>(nullable: true),
-                    Account_HomePage = table.Column<string>(maxLength: 2083, nullable: true),
-                    Account_Name = table.Column<string>(maxLength: 40, nullable: true),
-                    GroupEntityAgentHash = table.Column<string>(nullable: true)
+                    AccountId = table.Column<Guid>(nullable: false),
+                    HomePage = table.Column<string>(maxLength: 2083, nullable: true),
+                    Name = table.Column<string>(maxLength: 40, nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Agents", x => x.AgentHash);
-                    table.ForeignKey(
-                        name: "FK_Agents_Agents_GroupEntityAgentHash",
-                        column: x => x.GroupEntityAgentHash,
-                        principalTable: "Agents",
-                        principalColumn: "AgentHash",
-                        onDelete: ReferentialAction.Restrict);
+                    table.PrimaryKey("PK_Account", x => x.AccountId);
                 });
 
             migrationBuilder.CreateTable(
@@ -67,7 +55,7 @@ namespace Doctrina.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ResultEntity",
+                name: "Results",
                 columns: table => new
                 {
                     ResultId = table.Column<Guid>(nullable: false),
@@ -84,92 +72,62 @@ namespace Doctrina.Persistence.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ResultEntity", x => x.ResultId);
+                    table.PrimaryKey("PK_Results", x => x.ResultId);
                 });
 
             migrationBuilder.CreateTable(
                 name: "StatementRefEntity",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(nullable: false),
-                    StatementRefId = table.Column<Guid>(nullable: false)
+                    StatementRefId = table.Column<Guid>(nullable: false),
+                    Id = table.Column<Guid>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_StatementRefEntity", x => x.Id);
+                    table.PrimaryKey("PK_StatementRefEntity", x => x.StatementRefId);
                 });
 
             migrationBuilder.CreateTable(
                 name: "Verbs",
                 columns: table => new
                 {
-                    VerbHash = table.Column<string>(maxLength: 32, nullable: false),
+                    VerbId = table.Column<Guid>(nullable: false),
+                    Hash = table.Column<string>(maxLength: 32, nullable: false),
                     Id = table.Column<string>(maxLength: 2083, nullable: false),
                     Display = table.Column<string>(type: "ntext", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Verbs", x => x.VerbHash);
+                    table.PrimaryKey("PK_Verbs", x => x.VerbId);
                 });
 
             migrationBuilder.CreateTable(
-                name: "AgentProfiles",
+                name: "Agents",
                 columns: table => new
                 {
-                    AgentProfileId = table.Column<Guid>(nullable: false),
-                    ProfileId = table.Column<string>(maxLength: 2083, nullable: false),
-                    AgentHash = table.Column<string>(nullable: true),
-                    Document_ContentType = table.Column<string>(maxLength: 255, nullable: true),
-                    Document_Content = table.Column<byte[]>(nullable: true),
-                    Document_Checksum = table.Column<string>(maxLength: 50, nullable: false),
-                    Document_LastModified = table.Column<DateTimeOffset>(nullable: false, defaultValue: new DateTimeOffset(new DateTime(2019, 5, 26, 19, 21, 27, 563, DateTimeKind.Unspecified).AddTicks(3426), new TimeSpan(0, 0, 0, 0, 0))),
-                    Document_CreateDate = table.Column<DateTimeOffset>(nullable: false)
+                    AgentId = table.Column<Guid>(nullable: false),
+                    ObjectType = table.Column<int>(nullable: false),
+                    Name = table.Column<string>(maxLength: 100, nullable: true),
+                    Mbox = table.Column<string>(maxLength: 128, nullable: true),
+                    Mbox_SHA1SUM = table.Column<string>(maxLength: 40, nullable: true),
+                    OpenId = table.Column<string>(nullable: true),
+                    AccountId = table.Column<Guid>(nullable: true),
+                    GroupEntityAgentId = table.Column<Guid>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_AgentProfiles", x => x.AgentProfileId);
+                    table.PrimaryKey("PK_Agents", x => x.AgentId);
                     table.ForeignKey(
-                        name: "FK_AgentProfiles_Agents_AgentHash",
-                        column: x => x.AgentHash,
-                        principalTable: "Agents",
-                        principalColumn: "AgentHash",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Contexts",
-                columns: table => new
-                {
-                    ContextId = table.Column<Guid>(nullable: false),
-                    Registration = table.Column<Guid>(nullable: true),
-                    InstructorAgentHash = table.Column<string>(nullable: true),
-                    TeamAgentHash = table.Column<string>(nullable: true),
-                    Revision = table.Column<string>(nullable: true),
-                    Platform = table.Column<string>(nullable: true),
-                    Language = table.Column<string>(nullable: true),
-                    Extensions = table.Column<string>(type: "ntext", nullable: true),
-                    ContextActivitiesId = table.Column<Guid>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Contexts", x => x.ContextId);
-                    table.ForeignKey(
-                        name: "FK_Contexts_ContextActivities_ContextActivitiesId",
-                        column: x => x.ContextActivitiesId,
-                        principalTable: "ContextActivities",
-                        principalColumn: "ContextActivitiesId",
+                        name: "FK_Agents_Account_AccountId",
+                        column: x => x.AccountId,
+                        principalTable: "Account",
+                        principalColumn: "AccountId",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Contexts_Agents_InstructorAgentHash",
-                        column: x => x.InstructorAgentHash,
+                        name: "FK_Agents_Agents_GroupEntityAgentId",
+                        column: x => x.GroupEntityAgentId,
                         principalTable: "Agents",
-                        principalColumn: "AgentHash",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Contexts_Agents_TeamAgentHash",
-                        column: x => x.TeamAgentHash,
-                        principalTable: "Agents",
-                        principalColumn: "AgentHash",
+                        principalColumn: "AgentId",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -197,16 +155,78 @@ namespace Doctrina.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "AgentProfiles",
+                columns: table => new
+                {
+                    AgentProfileId = table.Column<Guid>(nullable: false),
+                    ProfileId = table.Column<string>(maxLength: 2083, nullable: false),
+                    AgentId = table.Column<Guid>(nullable: true),
+                    Document_ContentType = table.Column<string>(maxLength: 255, nullable: true),
+                    Document_Content = table.Column<byte[]>(nullable: true),
+                    Document_Checksum = table.Column<string>(maxLength: 50, nullable: true),
+                    Document_LastModified = table.Column<DateTimeOffset>(nullable: true, defaultValue: new DateTimeOffset(new DateTime(2019, 10, 12, 22, 45, 32, 998, DateTimeKind.Unspecified).AddTicks(9933), new TimeSpan(0, 0, 0, 0, 0))),
+                    Document_CreateDate = table.Column<DateTimeOffset>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AgentProfiles", x => x.AgentProfileId);
+                    table.ForeignKey(
+                        name: "FK_AgentProfiles_Agents_AgentId",
+                        column: x => x.AgentId,
+                        principalTable: "Agents",
+                        principalColumn: "AgentId",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Contexts",
+                columns: table => new
+                {
+                    ContextId = table.Column<Guid>(nullable: false),
+                    Registration = table.Column<Guid>(nullable: true),
+                    InstructorAgentId = table.Column<Guid>(nullable: true),
+                    TeamAgentId = table.Column<Guid>(nullable: true),
+                    Revision = table.Column<string>(nullable: true),
+                    Platform = table.Column<string>(nullable: true),
+                    Language = table.Column<string>(nullable: true),
+                    Extensions = table.Column<string>(type: "ntext", nullable: true),
+                    ContextActivitiesId = table.Column<Guid>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Contexts", x => x.ContextId);
+                    table.ForeignKey(
+                        name: "FK_Contexts_ContextActivities_ContextActivitiesId",
+                        column: x => x.ContextActivitiesId,
+                        principalTable: "ContextActivities",
+                        principalColumn: "ContextActivitiesId",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Contexts_Agents_InstructorAgentId",
+                        column: x => x.InstructorAgentId,
+                        principalTable: "Agents",
+                        principalColumn: "AgentId",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Contexts_Agents_TeamAgentId",
+                        column: x => x.TeamAgentId,
+                        principalTable: "Agents",
+                        principalColumn: "AgentId",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Activities",
                 columns: table => new
                 {
-                    ActivityHash = table.Column<string>(maxLength: 32, nullable: false),
-                    ActivityId = table.Column<string>(maxLength: 2083, nullable: false),
+                    ActivityId = table.Column<Guid>(nullable: false),
+                    Hash = table.Column<string>(maxLength: 32, nullable: false),
+                    Id = table.Column<string>(maxLength: 2083, nullable: false),
                     DefinitionActivityDefinitionId = table.Column<Guid>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Activities", x => x.ActivityHash);
+                    table.PrimaryKey("PK_Activities", x => x.ActivityId);
                     table.ForeignKey(
                         name: "FK_Activities_ActivityDefinitions_DefinitionActivityDefinitionId",
                         column: x => x.DefinitionActivityDefinitionId,
@@ -221,22 +241,22 @@ namespace Doctrina.Persistence.Migrations
                 {
                     ActivityProfileId = table.Column<Guid>(nullable: false),
                     ProfileId = table.Column<string>(nullable: false),
-                    ActivityHash = table.Column<string>(nullable: true),
+                    ActivityId = table.Column<Guid>(nullable: true),
                     RegistrationId = table.Column<Guid>(nullable: true),
                     Document_ContentType = table.Column<string>(maxLength: 255, nullable: true),
                     Document_Content = table.Column<byte[]>(nullable: true),
-                    Document_Checksum = table.Column<string>(maxLength: 50, nullable: false),
-                    Document_LastModified = table.Column<DateTimeOffset>(nullable: false, defaultValue: new DateTimeOffset(new DateTime(2019, 5, 26, 19, 21, 27, 539, DateTimeKind.Unspecified).AddTicks(7199), new TimeSpan(0, 0, 0, 0, 0))),
-                    Document_CreateDate = table.Column<DateTimeOffset>(nullable: false)
+                    Document_Checksum = table.Column<string>(maxLength: 50, nullable: true),
+                    Document_LastModified = table.Column<DateTimeOffset>(nullable: true, defaultValue: new DateTimeOffset(new DateTime(2019, 10, 12, 22, 45, 32, 975, DateTimeKind.Unspecified).AddTicks(3675), new TimeSpan(0, 0, 0, 0, 0))),
+                    Document_CreateDate = table.Column<DateTimeOffset>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_ActivityProfiles", x => x.ActivityProfileId);
                     table.ForeignKey(
-                        name: "FK_ActivityProfiles_Activities_ActivityHash",
-                        column: x => x.ActivityHash,
+                        name: "FK_ActivityProfiles_Activities_ActivityId",
+                        column: x => x.ActivityId,
                         principalTable: "Activities",
-                        principalColumn: "ActivityHash",
+                        principalColumn: "ActivityId",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -249,26 +269,26 @@ namespace Doctrina.Persistence.Migrations
                     Registration = table.Column<Guid>(nullable: true),
                     Document_ContentType = table.Column<string>(maxLength: 255, nullable: true),
                     Document_Content = table.Column<byte[]>(nullable: true),
-                    Document_Checksum = table.Column<string>(maxLength: 50, nullable: false),
-                    Document_LastModified = table.Column<DateTimeOffset>(nullable: false, defaultValue: new DateTimeOffset(new DateTime(2019, 5, 26, 19, 21, 27, 554, DateTimeKind.Unspecified).AddTicks(2222), new TimeSpan(0, 0, 0, 0, 0))),
-                    Document_CreateDate = table.Column<DateTimeOffset>(nullable: false),
-                    AgentHash = table.Column<string>(nullable: true),
-                    ActivityHash = table.Column<string>(nullable: true)
+                    Document_Checksum = table.Column<string>(maxLength: 50, nullable: true),
+                    Document_LastModified = table.Column<DateTimeOffset>(nullable: true, defaultValue: new DateTimeOffset(new DateTime(2019, 10, 12, 22, 45, 32, 991, DateTimeKind.Unspecified).AddTicks(7515), new TimeSpan(0, 0, 0, 0, 0))),
+                    Document_CreateDate = table.Column<DateTimeOffset>(nullable: true),
+                    AgentId = table.Column<Guid>(nullable: true),
+                    ActivityId = table.Column<Guid>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_ActivityStates", x => x.ActivityStateId);
                     table.ForeignKey(
-                        name: "FK_ActivityStates_Activities_ActivityHash",
-                        column: x => x.ActivityHash,
+                        name: "FK_ActivityStates_Activities_ActivityId",
+                        column: x => x.ActivityId,
                         principalTable: "Activities",
-                        principalColumn: "ActivityHash",
+                        principalColumn: "ActivityId",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_ActivityStates_Agents_AgentHash",
-                        column: x => x.AgentHash,
+                        name: "FK_ActivityStates_Agents_AgentId",
+                        column: x => x.AgentId,
                         principalTable: "Agents",
-                        principalColumn: "AgentHash",
+                        principalColumn: "AgentId",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -277,11 +297,11 @@ namespace Doctrina.Persistence.Migrations
                 columns: table => new
                 {
                     SubStatementId = table.Column<Guid>(nullable: false),
-                    VerbHash = table.Column<string>(nullable: false),
-                    ActorAgentHash = table.Column<string>(nullable: false),
-                    Object_ObjectType = table.Column<int>(nullable: false),
-                    Object_AgentHash = table.Column<string>(nullable: true),
-                    Object_ActivityHash = table.Column<string>(nullable: true),
+                    VerbId = table.Column<Guid>(nullable: false),
+                    ActorAgentId = table.Column<Guid>(nullable: false),
+                    Object_ObjectType = table.Column<int>(nullable: true),
+                    Object_AgentId = table.Column<Guid>(nullable: true),
+                    Object_ActivityId = table.Column<Guid>(nullable: true),
                     Object_StatementRefId = table.Column<Guid>(nullable: true),
                     ContextId = table.Column<Guid>(nullable: true),
                     ResultId = table.Column<Guid>(nullable: true),
@@ -291,10 +311,10 @@ namespace Doctrina.Persistence.Migrations
                 {
                     table.PrimaryKey("PK_SubStatements", x => x.SubStatementId);
                     table.ForeignKey(
-                        name: "FK_SubStatements_Agents_ActorAgentHash",
-                        column: x => x.ActorAgentHash,
+                        name: "FK_SubStatements_Agents_ActorAgentId",
+                        column: x => x.ActorAgentId,
                         principalTable: "Agents",
-                        principalColumn: "AgentHash",
+                        principalColumn: "AgentId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_SubStatements_Contexts_ContextId",
@@ -303,34 +323,34 @@ namespace Doctrina.Persistence.Migrations
                         principalColumn: "ContextId",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_SubStatements_ResultEntity_ResultId",
+                        name: "FK_SubStatements_Results_ResultId",
                         column: x => x.ResultId,
-                        principalTable: "ResultEntity",
+                        principalTable: "Results",
                         principalColumn: "ResultId",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_SubStatements_Verbs_VerbHash",
-                        column: x => x.VerbHash,
+                        name: "FK_SubStatements_Verbs_VerbId",
+                        column: x => x.VerbId,
                         principalTable: "Verbs",
-                        principalColumn: "VerbHash",
+                        principalColumn: "VerbId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_SubStatements_Activities_Object_ActivityHash",
-                        column: x => x.Object_ActivityHash,
+                        name: "FK_SubStatements_Activities_Object_ActivityId",
+                        column: x => x.Object_ActivityId,
                         principalTable: "Activities",
-                        principalColumn: "ActivityHash",
+                        principalColumn: "ActivityId",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_SubStatements_Agents_Object_AgentHash",
-                        column: x => x.Object_AgentHash,
+                        name: "FK_SubStatements_Agents_Object_AgentId",
+                        column: x => x.Object_AgentId,
                         principalTable: "Agents",
-                        principalColumn: "AgentHash",
+                        principalColumn: "AgentId",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_SubStatements_StatementRefEntity_Object_StatementRefId",
                         column: x => x.Object_StatementRefId,
                         principalTable: "StatementRefEntity",
-                        principalColumn: "Id",
+                        principalColumn: "StatementRefId",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -339,11 +359,11 @@ namespace Doctrina.Persistence.Migrations
                 columns: table => new
                 {
                     StatementId = table.Column<Guid>(nullable: false),
-                    ActorAgentHash = table.Column<string>(nullable: false),
-                    VerbHash = table.Column<string>(nullable: false),
-                    Object_ObjectType = table.Column<int>(nullable: false),
-                    Object_AgentHash = table.Column<string>(nullable: true),
-                    Object_ActivityHash = table.Column<string>(nullable: true),
+                    ActorAgentId = table.Column<Guid>(nullable: false),
+                    VerbId = table.Column<Guid>(nullable: false),
+                    Object_ObjectType = table.Column<int>(nullable: true),
+                    Object_AgentId = table.Column<Guid>(nullable: true),
+                    Object_ActivityId = table.Column<Guid>(nullable: true),
                     Object_SubStatementId = table.Column<Guid>(nullable: true),
                     Object_StatementRefId = table.Column<Guid>(nullable: true),
                     Timestamp = table.Column<DateTimeOffset>(nullable: false),
@@ -353,23 +373,22 @@ namespace Doctrina.Persistence.Migrations
                     Version = table.Column<string>(maxLength: 7, nullable: true),
                     AuthorityId = table.Column<Guid>(nullable: true),
                     FullStatement = table.Column<string>(nullable: true),
-                    Voided = table.Column<bool>(nullable: false, defaultValue: false),
-                    AuthorityAgentHash = table.Column<string>(nullable: true)
+                    Voided = table.Column<bool>(nullable: false, defaultValue: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Statements", x => x.StatementId);
                     table.ForeignKey(
-                        name: "FK_Statements_Agents_ActorAgentHash",
-                        column: x => x.ActorAgentHash,
+                        name: "FK_Statements_Agents_ActorAgentId",
+                        column: x => x.ActorAgentId,
                         principalTable: "Agents",
-                        principalColumn: "AgentHash",
+                        principalColumn: "AgentId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Statements_Agents_AuthorityAgentHash",
-                        column: x => x.AuthorityAgentHash,
+                        name: "FK_Statements_Agents_AuthorityId",
+                        column: x => x.AuthorityId,
                         principalTable: "Agents",
-                        principalColumn: "AgentHash",
+                        principalColumn: "AgentId",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Statements_Contexts_ContextId",
@@ -378,34 +397,34 @@ namespace Doctrina.Persistence.Migrations
                         principalColumn: "ContextId",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Statements_ResultEntity_ResultId",
+                        name: "FK_Statements_Results_ResultId",
                         column: x => x.ResultId,
-                        principalTable: "ResultEntity",
+                        principalTable: "Results",
                         principalColumn: "ResultId",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Statements_Verbs_VerbHash",
-                        column: x => x.VerbHash,
+                        name: "FK_Statements_Verbs_VerbId",
+                        column: x => x.VerbId,
                         principalTable: "Verbs",
-                        principalColumn: "VerbHash",
+                        principalColumn: "VerbId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Statements_Activities_Object_ActivityHash",
-                        column: x => x.Object_ActivityHash,
+                        name: "FK_Statements_Activities_Object_ActivityId",
+                        column: x => x.Object_ActivityId,
                         principalTable: "Activities",
-                        principalColumn: "ActivityHash",
+                        principalColumn: "ActivityId",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Statements_Agents_Object_AgentHash",
-                        column: x => x.Object_AgentHash,
+                        name: "FK_Statements_Agents_Object_AgentId",
+                        column: x => x.Object_AgentId,
                         principalTable: "Agents",
-                        principalColumn: "AgentHash",
+                        principalColumn: "AgentId",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Statements_StatementRefEntity_Object_StatementRefId",
                         column: x => x.Object_StatementRefId,
                         principalTable: "StatementRefEntity",
-                        principalColumn: "Id",
+                        principalColumn: "StatementRefId",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Statements_SubStatements_Object_SubStatementId",
@@ -416,58 +435,44 @@ namespace Doctrina.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "SubStatement_Attachments",
+                name: "AttachmentEntity",
                 columns: table => new
                 {
-                    AttachmentId = table.Column<Guid>(nullable: false),
                     Id = table.Column<Guid>(nullable: false),
                     UsageType = table.Column<string>(maxLength: 2083, nullable: false),
                     Description = table.Column<string>(type: "ntext", nullable: true),
-                    Display = table.Column<string>(type: "ntext", nullable: true),
+                    Display = table.Column<string>(type: "ntext", nullable: false),
                     ContentType = table.Column<string>(maxLength: 255, nullable: false),
                     Payload = table.Column<byte[]>(nullable: true),
                     FileUrl = table.Column<string>(nullable: true),
                     SHA2 = table.Column<string>(nullable: false),
                     Length = table.Column<int>(nullable: false),
-                    StatementId = table.Column<Guid>(nullable: false)
+                    StatementEntityStatementId = table.Column<Guid>(nullable: true),
+                    SubStatementEntitySubStatementId = table.Column<Guid>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_SubStatement_Attachments", x => x.AttachmentId);
+                    table.PrimaryKey("PK_AttachmentEntity", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_SubStatement_Attachments_SubStatements_StatementId",
-                        column: x => x.StatementId,
-                        principalTable: "SubStatements",
-                        principalColumn: "SubStatementId",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Statement_Attachments",
-                columns: table => new
-                {
-                    AttachmentId = table.Column<Guid>(nullable: false),
-                    Id = table.Column<Guid>(nullable: false),
-                    UsageType = table.Column<string>(maxLength: 2083, nullable: false),
-                    Description = table.Column<string>(type: "ntext", nullable: true),
-                    Display = table.Column<string>(type: "ntext", nullable: true),
-                    ContentType = table.Column<string>(maxLength: 255, nullable: false),
-                    Payload = table.Column<byte[]>(nullable: true),
-                    FileUrl = table.Column<string>(nullable: true),
-                    SHA2 = table.Column<string>(nullable: false),
-                    Length = table.Column<int>(nullable: false),
-                    StatementId = table.Column<Guid>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Statement_Attachments", x => x.AttachmentId);
-                    table.ForeignKey(
-                        name: "FK_Statement_Attachments_Statements_StatementId",
-                        column: x => x.StatementId,
+                        name: "FK_AttachmentEntity_Statements_StatementEntityStatementId",
+                        column: x => x.StatementEntityStatementId,
                         principalTable: "Statements",
                         principalColumn: "StatementId",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_AttachmentEntity_SubStatements_SubStatementEntitySubStatementId",
+                        column: x => x.SubStatementEntitySubStatementId,
+                        principalTable: "SubStatements",
+                        principalColumn: "SubStatementId",
+                        onDelete: ReferentialAction.Restrict);
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Account_HomePage_Name",
+                table: "Account",
+                columns: new[] { "HomePage", "Name" },
+                unique: true,
+                filter: "[Account_HomePage] IS NOT NULL AND [Account_Name] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Activities_DefinitionActivityDefinitionId",
@@ -475,29 +480,41 @@ namespace Doctrina.Persistence.Migrations
                 column: "DefinitionActivityDefinitionId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Activities_Hash",
+                table: "Activities",
+                column: "Hash",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Activities_Id",
+                table: "Activities",
+                column: "Id",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_ActivityDefinitions_InteractionActivityInteractionId",
                 table: "ActivityDefinitions",
                 column: "InteractionActivityInteractionId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ActivityProfiles_ActivityHash",
+                name: "IX_ActivityProfiles_ActivityId",
                 table: "ActivityProfiles",
-                column: "ActivityHash");
+                column: "ActivityId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ActivityStates_ActivityHash",
+                name: "IX_ActivityStates_ActivityId",
                 table: "ActivityStates",
-                column: "ActivityHash");
+                column: "ActivityId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ActivityStates_AgentHash",
+                name: "IX_ActivityStates_AgentId",
                 table: "ActivityStates",
-                column: "AgentHash");
+                column: "AgentId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_AgentProfiles_AgentHash",
+                name: "IX_AgentProfiles_AgentId",
                 table: "AgentProfiles",
-                column: "AgentHash");
+                column: "AgentId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_AgentProfiles_ProfileId",
@@ -506,16 +523,45 @@ namespace Doctrina.Persistence.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Agents_Account_HomePage_Account_Name",
+                name: "IX_Agents_AccountId",
                 table: "Agents",
-                columns: new[] { "Account_HomePage", "Account_Name" },
-                unique: true,
-                filter: "[Account_HomePage] IS NOT NULL AND [Account_Name] IS NOT NULL");
+                column: "AccountId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Agents_GroupEntityAgentHash",
+                name: "IX_Agents_GroupEntityAgentId",
                 table: "Agents",
-                column: "GroupEntityAgentHash");
+                column: "GroupEntityAgentId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Agents_ObjectType_Mbox",
+                table: "Agents",
+                columns: new[] { "ObjectType", "Mbox" },
+                unique: true,
+                filter: "[Mbox] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Agents_ObjectType_Mbox_SHA1SUM",
+                table: "Agents",
+                columns: new[] { "ObjectType", "Mbox_SHA1SUM" },
+                unique: true,
+                filter: "[Mbox_SHA1SUM] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Agents_ObjectType_OpenId",
+                table: "Agents",
+                columns: new[] { "ObjectType", "OpenId" },
+                unique: true,
+                filter: "[OpenId] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AttachmentEntity_StatementEntityStatementId",
+                table: "AttachmentEntity",
+                column: "StatementEntityStatementId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AttachmentEntity_SubStatementEntitySubStatementId",
+                table: "AttachmentEntity",
+                column: "SubStatementEntitySubStatementId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Contexts_ContextActivitiesId",
@@ -523,29 +569,30 @@ namespace Doctrina.Persistence.Migrations
                 column: "ContextActivitiesId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Contexts_InstructorAgentHash",
+                name: "IX_Contexts_InstructorAgentId",
                 table: "Contexts",
-                column: "InstructorAgentHash");
+                column: "InstructorAgentId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Contexts_TeamAgentHash",
+                name: "IX_Contexts_TeamAgentId",
                 table: "Contexts",
-                column: "TeamAgentHash");
+                column: "TeamAgentId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Statement_Attachments_StatementId",
-                table: "Statement_Attachments",
-                column: "StatementId");
+                name: "IX_StatementRefEntity_Id",
+                table: "StatementRefEntity",
+                column: "Id")
+                .Annotation("SqlServer:Clustered", true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Statements_ActorAgentHash",
+                name: "IX_Statements_ActorAgentId",
                 table: "Statements",
-                column: "ActorAgentHash");
+                column: "ActorAgentId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Statements_AuthorityAgentHash",
+                name: "IX_Statements_AuthorityId",
                 table: "Statements",
-                column: "AuthorityAgentHash");
+                column: "AuthorityId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Statements_ContextId",
@@ -558,19 +605,19 @@ namespace Doctrina.Persistence.Migrations
                 column: "ResultId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Statements_VerbHash",
+                name: "IX_Statements_VerbId",
                 table: "Statements",
-                column: "VerbHash");
+                column: "VerbId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Statements_Object_ActivityHash",
+                name: "IX_Statements_Object_ActivityId",
                 table: "Statements",
-                column: "Object_ActivityHash");
+                column: "Object_ActivityId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Statements_Object_AgentHash",
+                name: "IX_Statements_Object_AgentId",
                 table: "Statements",
-                column: "Object_AgentHash");
+                column: "Object_AgentId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Statements_Object_StatementRefId",
@@ -583,14 +630,9 @@ namespace Doctrina.Persistence.Migrations
                 column: "Object_SubStatementId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_SubStatement_Attachments_StatementId",
-                table: "SubStatement_Attachments",
-                column: "StatementId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_SubStatements_ActorAgentHash",
+                name: "IX_SubStatements_ActorAgentId",
                 table: "SubStatements",
-                column: "ActorAgentHash");
+                column: "ActorAgentId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_SubStatements_ContextId",
@@ -603,24 +645,36 @@ namespace Doctrina.Persistence.Migrations
                 column: "ResultId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_SubStatements_VerbHash",
+                name: "IX_SubStatements_VerbId",
                 table: "SubStatements",
-                column: "VerbHash");
+                column: "VerbId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_SubStatements_Object_ActivityHash",
+                name: "IX_SubStatements_Object_ActivityId",
                 table: "SubStatements",
-                column: "Object_ActivityHash");
+                column: "Object_ActivityId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_SubStatements_Object_AgentHash",
+                name: "IX_SubStatements_Object_AgentId",
                 table: "SubStatements",
-                column: "Object_AgentHash");
+                column: "Object_AgentId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_SubStatements_Object_StatementRefId",
                 table: "SubStatements",
                 column: "Object_StatementRefId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Verbs_Hash",
+                table: "Verbs",
+                column: "Hash",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Verbs_Id",
+                table: "Verbs",
+                column: "Id",
+                unique: true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -635,10 +689,7 @@ namespace Doctrina.Persistence.Migrations
                 name: "AgentProfiles");
 
             migrationBuilder.DropTable(
-                name: "Statement_Attachments");
-
-            migrationBuilder.DropTable(
-                name: "SubStatement_Attachments");
+                name: "AttachmentEntity");
 
             migrationBuilder.DropTable(
                 name: "Statements");
@@ -650,7 +701,7 @@ namespace Doctrina.Persistence.Migrations
                 name: "Contexts");
 
             migrationBuilder.DropTable(
-                name: "ResultEntity");
+                name: "Results");
 
             migrationBuilder.DropTable(
                 name: "Verbs");
@@ -669,6 +720,9 @@ namespace Doctrina.Persistence.Migrations
 
             migrationBuilder.DropTable(
                 name: "ActivityDefinitions");
+
+            migrationBuilder.DropTable(
+                name: "Account");
 
             migrationBuilder.DropTable(
                 name: "InteractionActivities");

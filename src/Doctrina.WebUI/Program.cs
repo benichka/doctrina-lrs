@@ -37,9 +37,8 @@ namespace Doctrina.WebUI
 
                 try
                 {
-                    var northwindContext = services.GetRequiredService<DoctrinaDbContext>();
-                    northwindContext.Database.EnsureDeleted();
-                    northwindContext.Database.Migrate();
+                    var doctrinaContext = services.GetRequiredService<DoctrinaDbContext>();
+                    doctrinaContext.Database.Migrate();
 
                     var identityContext = services.GetRequiredService<DoctrinaAuthorizationDbContext>();
                     identityContext.Database.Migrate();
