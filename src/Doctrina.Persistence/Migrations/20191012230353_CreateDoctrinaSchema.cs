@@ -164,7 +164,7 @@ namespace Doctrina.Persistence.Migrations
                     Document_ContentType = table.Column<string>(maxLength: 255, nullable: true),
                     Document_Content = table.Column<byte[]>(nullable: true),
                     Document_Checksum = table.Column<string>(maxLength: 50, nullable: true),
-                    Document_LastModified = table.Column<DateTimeOffset>(nullable: true, defaultValue: new DateTimeOffset(new DateTime(2019, 10, 12, 22, 45, 32, 998, DateTimeKind.Unspecified).AddTicks(9933), new TimeSpan(0, 0, 0, 0, 0))),
+                    Document_LastModified = table.Column<DateTimeOffset>(nullable: true, defaultValue: new DateTimeOffset(new DateTime(2019, 10, 12, 23, 3, 52, 686, DateTimeKind.Unspecified).AddTicks(5944), new TimeSpan(0, 0, 0, 0, 0))),
                     Document_CreateDate = table.Column<DateTimeOffset>(nullable: true)
                 },
                 constraints: table =>
@@ -246,7 +246,7 @@ namespace Doctrina.Persistence.Migrations
                     Document_ContentType = table.Column<string>(maxLength: 255, nullable: true),
                     Document_Content = table.Column<byte[]>(nullable: true),
                     Document_Checksum = table.Column<string>(maxLength: 50, nullable: true),
-                    Document_LastModified = table.Column<DateTimeOffset>(nullable: true, defaultValue: new DateTimeOffset(new DateTime(2019, 10, 12, 22, 45, 32, 975, DateTimeKind.Unspecified).AddTicks(3675), new TimeSpan(0, 0, 0, 0, 0))),
+                    Document_LastModified = table.Column<DateTimeOffset>(nullable: true, defaultValue: new DateTimeOffset(new DateTime(2019, 10, 12, 23, 3, 52, 672, DateTimeKind.Unspecified).AddTicks(15), new TimeSpan(0, 0, 0, 0, 0))),
                     Document_CreateDate = table.Column<DateTimeOffset>(nullable: true)
                 },
                 constraints: table =>
@@ -270,7 +270,7 @@ namespace Doctrina.Persistence.Migrations
                     Document_ContentType = table.Column<string>(maxLength: 255, nullable: true),
                     Document_Content = table.Column<byte[]>(nullable: true),
                     Document_Checksum = table.Column<string>(maxLength: 50, nullable: true),
-                    Document_LastModified = table.Column<DateTimeOffset>(nullable: true, defaultValue: new DateTimeOffset(new DateTime(2019, 10, 12, 22, 45, 32, 991, DateTimeKind.Unspecified).AddTicks(7515), new TimeSpan(0, 0, 0, 0, 0))),
+                    Document_LastModified = table.Column<DateTimeOffset>(nullable: true, defaultValue: new DateTimeOffset(new DateTime(2019, 10, 12, 23, 3, 52, 682, DateTimeKind.Unspecified).AddTicks(6711), new TimeSpan(0, 0, 0, 0, 0))),
                     Document_CreateDate = table.Column<DateTimeOffset>(nullable: true),
                     AgentId = table.Column<Guid>(nullable: true),
                     ActivityId = table.Column<Guid>(nullable: true)
