@@ -164,7 +164,7 @@ namespace Doctrina.Persistence.Migrations
                     Document_ContentType = table.Column<string>(maxLength: 255, nullable: true),
                     Document_Content = table.Column<byte[]>(nullable: true),
                     Document_Checksum = table.Column<string>(maxLength: 50, nullable: true),
-                    Document_LastModified = table.Column<DateTimeOffset>(nullable: true, defaultValue: new DateTimeOffset(new DateTime(2019, 10, 13, 17, 35, 39, 786, DateTimeKind.Unspecified).AddTicks(9140), new TimeSpan(0, 0, 0, 0, 0))),
+                    Document_LastModified = table.Column<DateTimeOffset>(nullable: true, defaultValue: new DateTimeOffset(new DateTime(2019, 10, 13, 18, 19, 47, 30, DateTimeKind.Unspecified).AddTicks(8770), new TimeSpan(0, 0, 0, 0, 0))),
                     Document_CreateDate = table.Column<DateTimeOffset>(nullable: true)
                 },
                 constraints: table =>
@@ -246,7 +246,7 @@ namespace Doctrina.Persistence.Migrations
                     Document_ContentType = table.Column<string>(maxLength: 255, nullable: true),
                     Document_Content = table.Column<byte[]>(nullable: true),
                     Document_Checksum = table.Column<string>(maxLength: 50, nullable: true),
-                    Document_LastModified = table.Column<DateTimeOffset>(nullable: true, defaultValue: new DateTimeOffset(new DateTime(2019, 10, 13, 17, 35, 39, 760, DateTimeKind.Unspecified).AddTicks(765), new TimeSpan(0, 0, 0, 0, 0))),
+                    Document_LastModified = table.Column<DateTimeOffset>(nullable: true, defaultValue: new DateTimeOffset(new DateTime(2019, 10, 13, 18, 19, 47, 18, DateTimeKind.Unspecified).AddTicks(2782), new TimeSpan(0, 0, 0, 0, 0))),
                     Document_CreateDate = table.Column<DateTimeOffset>(nullable: true)
                 },
                 constraints: table =>
@@ -270,7 +270,7 @@ namespace Doctrina.Persistence.Migrations
                     Document_ContentType = table.Column<string>(maxLength: 255, nullable: true),
                     Document_Content = table.Column<byte[]>(nullable: true),
                     Document_Checksum = table.Column<string>(maxLength: 50, nullable: true),
-                    Document_LastModified = table.Column<DateTimeOffset>(nullable: true, defaultValue: new DateTimeOffset(new DateTime(2019, 10, 13, 17, 35, 39, 773, DateTimeKind.Unspecified).AddTicks(4688), new TimeSpan(0, 0, 0, 0, 0))),
+                    Document_LastModified = table.Column<DateTimeOffset>(nullable: true, defaultValue: new DateTimeOffset(new DateTime(2019, 10, 13, 18, 19, 47, 26, DateTimeKind.Unspecified).AddTicks(952), new TimeSpan(0, 0, 0, 0, 0))),
                     Document_CreateDate = table.Column<DateTimeOffset>(nullable: true),
                     AgentId = table.Column<Guid>(nullable: true),
                     ActivityId = table.Column<Guid>(nullable: true)
@@ -531,13 +531,6 @@ namespace Doctrina.Persistence.Migrations
                 name: "IX_Agents_GroupEntityAgentId",
                 table: "Agents",
                 column: "GroupEntityAgentId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Agents_ObjectType_AccountId",
-                table: "Agents",
-                columns: new[] { "ObjectType", "AccountId" },
-                unique: true,
-                filter: "[AccountId] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Agents_ObjectType_Mbox",

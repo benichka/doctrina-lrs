@@ -49,6 +49,7 @@ namespace Doctrina.Persistence.Configurations
                 .HasFilter("[OpenId] IS NOT NULL")
                 .IsUnique();
 
+            // TODO: We need to make sure accounts are Agents or Groups unique when identified with an account
             builder
                 .HasIndex("ObjectType", "AccountId")
                 .HasFilter("[AccountId] IS NOT NULL")

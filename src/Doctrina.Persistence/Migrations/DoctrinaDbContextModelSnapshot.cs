@@ -145,10 +145,6 @@ namespace Doctrina.Persistence.Migrations
 
                     b.HasIndex("GroupEntityAgentId");
 
-                    b.HasIndex("ObjectType", "AccountId")
-                        .IsUnique()
-                        .HasFilter("[AccountId] IS NOT NULL");
-
                     b.HasIndex("ObjectType", "Mbox")
                         .IsUnique()
                         .HasFilter("[Mbox] IS NOT NULL");
@@ -723,7 +719,7 @@ namespace Doctrina.Persistence.Migrations
                                 .IsRequired()
                                 .ValueGeneratedOnAddOrUpdate()
                                 .HasColumnType("datetimeoffset")
-                                .HasDefaultValue(new DateTimeOffset(new DateTime(2019, 10, 13, 17, 35, 39, 760, DateTimeKind.Unspecified).AddTicks(765), new TimeSpan(0, 0, 0, 0, 0)));
+                                .HasDefaultValue(new DateTimeOffset(new DateTime(2019, 10, 13, 18, 19, 47, 18, DateTimeKind.Unspecified).AddTicks(2782), new TimeSpan(0, 0, 0, 0, 0)));
 
                             b1.HasKey("ActivityProfileEntityActivityProfileId");
 
@@ -769,7 +765,7 @@ namespace Doctrina.Persistence.Migrations
                                 .IsRequired()
                                 .ValueGeneratedOnAddOrUpdate()
                                 .HasColumnType("datetimeoffset")
-                                .HasDefaultValue(new DateTimeOffset(new DateTime(2019, 10, 13, 17, 35, 39, 773, DateTimeKind.Unspecified).AddTicks(4688), new TimeSpan(0, 0, 0, 0, 0)));
+                                .HasDefaultValue(new DateTimeOffset(new DateTime(2019, 10, 13, 18, 19, 47, 26, DateTimeKind.Unspecified).AddTicks(952), new TimeSpan(0, 0, 0, 0, 0)));
 
                             b1.HasKey("ActivityStateEntityActivityStateId");
 
@@ -811,7 +807,7 @@ namespace Doctrina.Persistence.Migrations
                                 .IsRequired()
                                 .ValueGeneratedOnAddOrUpdate()
                                 .HasColumnType("datetimeoffset")
-                                .HasDefaultValue(new DateTimeOffset(new DateTime(2019, 10, 13, 17, 35, 39, 786, DateTimeKind.Unspecified).AddTicks(9140), new TimeSpan(0, 0, 0, 0, 0)));
+                                .HasDefaultValue(new DateTimeOffset(new DateTime(2019, 10, 13, 18, 19, 47, 30, DateTimeKind.Unspecified).AddTicks(8770), new TimeSpan(0, 0, 0, 0, 0)));
 
                             b1.HasKey("AgentProfileEntityAgentProfileId");
 
