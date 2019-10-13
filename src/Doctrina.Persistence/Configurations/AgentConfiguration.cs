@@ -31,15 +31,8 @@ namespace Doctrina.Persistence.Configurations
                .HasColumnName("OpenId");
 
             builder.HasOne(x => x.Account)
-                .WithMany();
-
-            //builder.OwnsOne(e => e.Account, a =>
-            //{
-            //    a.Property(x => x.HomePage);
-            //    a.Property(x => x.Name);
-
-            //    a.HasIndex(x => new { x.HomePage, x.Name });
-            //});
+                .WithMany()
+                .HasForeignKey("AccountId");
 
             builder
                 .HasIndex(x => new { x.ObjectType, x.Mbox })
@@ -56,11 +49,10 @@ namespace Doctrina.Persistence.Configurations
                 .HasFilter("[OpenId] IS NOT NULL")
                 .IsUnique();
 
-            // TODO: Create index and filter for account
-            //builder
-            //    .HasIndex(x=> new { x.ObjectType, x.Account })
-            //    .HasFilter("[Account_Name] IS NOT NULL AND [Account_HomePage] IS NOT NULL")
-            //    .IsUnique();
+            builder
+                .HasIndex("ObjectType", "AccountId")
+                .HasFilter("[AccountId] IS NOT NULL")
+                .IsUnique();
         }
     }
 }

@@ -41,38 +41,6 @@ namespace Doctrina.Persistence.Configurations
             builder.HasMany(x => x.Attachments)
                 .WithOne();
 
-            //builder.OwnsMany(e => e.Attachments, a =>
-            //{
-            //    a.Property<Guid>("AttachmentId");
-            //    a.HasKey("AttachmentId");
-            //    a.WithOwner()
-            //        .HasForeignKey("StatementId");
-
-            //    a.Property(e => e.UsageType)
-            //   .IsRequired()
-            //   .HasMaxLength(Constants.MAX_URL_LENGTH);
-
-            //    a.Property(e => e.ContentType)
-            //        .IsRequired()
-            //        .HasMaxLength(255);
-
-            //    a.Property(e => e.SHA2)
-            //        .IsRequired();
-
-            //    a.Property(e => e.Display)
-            //        .HasConversion(new LanguageMapCollectionValueConverter())
-            //        .HasColumnType("ntext");
-
-            //    a.Property(e => e.Description)
-            //      .HasConversion(new LanguageMapCollectionValueConverter())
-            //      .HasColumnType("ntext");
-
-            //    a.Property(e => e.Length)
-            //        .IsRequired();
-
-            //    a.ToTable("Statement_Attachments");
-            //});
-
             builder.Property(e => e.Stored)
                .IsRequired()
                .ValueGeneratedOnAdd();

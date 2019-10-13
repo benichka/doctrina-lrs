@@ -11,9 +11,9 @@ namespace Doctrina.Persistence.Configurations
         {
             builder.ToTable("ContextActivities");
 
-            builder.HasKey(e => e.ContextActivitiesId);
             builder.Property(e => e.ContextActivitiesId)
                 .ValueGeneratedOnAdd();
+            builder.HasKey(e => e.ContextActivitiesId);
 
             builder.Property(e => e.Parent)
                 .HasConversion(new ContextActivityCollectionValueConverter())

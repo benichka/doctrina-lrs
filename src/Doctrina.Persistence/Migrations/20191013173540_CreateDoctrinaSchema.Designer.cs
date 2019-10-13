@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Doctrina.Persistence.Migrations
 {
     [DbContext(typeof(DoctrinaDbContext))]
-    [Migration("20191012230353_CreateDoctrinaSchema")]
+    [Migration("20191013173540_CreateDoctrinaSchema")]
     partial class CreateDoctrinaSchema
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -40,9 +40,9 @@ namespace Doctrina.Persistence.Migrations
 
                     b.HasIndex("HomePage", "Name")
                         .IsUnique()
-                        .HasFilter("[Account_HomePage] IS NOT NULL AND [Account_Name] IS NOT NULL");
+                        .HasFilter("[HomePage] IS NOT NULL AND [Name] IS NOT NULL");
 
-                    b.ToTable("Account");
+                    b.ToTable("AgentAccounts");
                 });
 
             modelBuilder.Entity("Doctrina.Domain.Entities.ActivityDefinitionEntity", b =>
@@ -146,6 +146,10 @@ namespace Doctrina.Persistence.Migrations
                     b.HasIndex("AccountId");
 
                     b.HasIndex("GroupEntityAgentId");
+
+                    b.HasIndex("ObjectType", "AccountId")
+                        .IsUnique()
+                        .HasFilter("[AccountId] IS NOT NULL");
 
                     b.HasIndex("ObjectType", "Mbox")
                         .IsUnique()
@@ -473,8 +477,7 @@ namespace Doctrina.Persistence.Migrations
 
                     b.HasKey("StatementRefId");
 
-                    b.HasIndex("Id")
-                        .HasAnnotation("SqlServer:Clustered", true);
+                    b.HasIndex("Id");
 
                     b.ToTable("StatementRefEntity");
                 });
@@ -722,7 +725,7 @@ namespace Doctrina.Persistence.Migrations
                                 .IsRequired()
                                 .ValueGeneratedOnAddOrUpdate()
                                 .HasColumnType("datetimeoffset")
-                                .HasDefaultValue(new DateTimeOffset(new DateTime(2019, 10, 12, 23, 3, 52, 672, DateTimeKind.Unspecified).AddTicks(15), new TimeSpan(0, 0, 0, 0, 0)));
+                                .HasDefaultValue(new DateTimeOffset(new DateTime(2019, 10, 13, 17, 35, 39, 760, DateTimeKind.Unspecified).AddTicks(765), new TimeSpan(0, 0, 0, 0, 0)));
 
                             b1.HasKey("ActivityProfileEntityActivityProfileId");
 
@@ -768,7 +771,7 @@ namespace Doctrina.Persistence.Migrations
                                 .IsRequired()
                                 .ValueGeneratedOnAddOrUpdate()
                                 .HasColumnType("datetimeoffset")
-                                .HasDefaultValue(new DateTimeOffset(new DateTime(2019, 10, 12, 23, 3, 52, 682, DateTimeKind.Unspecified).AddTicks(6711), new TimeSpan(0, 0, 0, 0, 0)));
+                                .HasDefaultValue(new DateTimeOffset(new DateTime(2019, 10, 13, 17, 35, 39, 773, DateTimeKind.Unspecified).AddTicks(4688), new TimeSpan(0, 0, 0, 0, 0)));
 
                             b1.HasKey("ActivityStateEntityActivityStateId");
 
@@ -810,7 +813,7 @@ namespace Doctrina.Persistence.Migrations
                                 .IsRequired()
                                 .ValueGeneratedOnAddOrUpdate()
                                 .HasColumnType("datetimeoffset")
-                                .HasDefaultValue(new DateTimeOffset(new DateTime(2019, 10, 12, 23, 3, 52, 686, DateTimeKind.Unspecified).AddTicks(5944), new TimeSpan(0, 0, 0, 0, 0)));
+                                .HasDefaultValue(new DateTimeOffset(new DateTime(2019, 10, 13, 17, 35, 39, 786, DateTimeKind.Unspecified).AddTicks(9140), new TimeSpan(0, 0, 0, 0, 0)));
 
                             b1.HasKey("AgentProfileEntityAgentProfileId");
 

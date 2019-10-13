@@ -14,8 +14,7 @@ namespace Doctrina.Persistence.Configurations
 
             builder.Property(x => x.Id)
                 .IsRequired();
-            builder.HasIndex(x => x.Id)
-                .IsClustered();
+            builder.HasIndex(x => x.Id);
         }
     }
 }

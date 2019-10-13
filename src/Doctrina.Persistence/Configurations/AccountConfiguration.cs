@@ -9,7 +9,8 @@ namespace Doctrina.Persistence.Configurations
     {
         public void Configure(EntityTypeBuilder<Account> builder)
         {
-            builder.Property<Guid>("AccountId");
+            builder.Property<Guid>("AccountId")
+                .ValueGeneratedOnAdd();
             builder.HasKey("AccountId");
 
             builder.Property(e => e.HomePage)
@@ -20,8 +21,10 @@ namespace Doctrina.Persistence.Configurations
 
             builder
                 .HasIndex(account => new { account.HomePage, account.Name })
-                .HasFilter("[Account_HomePage] IS NOT NULL AND [Account_Name] IS NOT NULL")
+                .HasFilter("[HomePage] IS NOT NULL AND [Name] IS NOT NULL")
                 .IsUnique();
+
+            builder.ToTable("AgentAccounts");
         }
     }
 }

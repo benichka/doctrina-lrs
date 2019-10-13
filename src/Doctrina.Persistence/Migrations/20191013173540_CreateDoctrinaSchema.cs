@@ -8,7 +8,7 @@ namespace Doctrina.Persistence.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Account",
+                name: "AgentAccounts",
                 columns: table => new
                 {
                     AccountId = table.Column<Guid>(nullable: false),
@@ -17,7 +17,7 @@ namespace Doctrina.Persistence.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Account", x => x.AccountId);
+                    table.PrimaryKey("PK_AgentAccounts", x => x.AccountId);
                 });
 
             migrationBuilder.CreateTable(
@@ -118,9 +118,9 @@ namespace Doctrina.Persistence.Migrations
                 {
                     table.PrimaryKey("PK_Agents", x => x.AgentId);
                     table.ForeignKey(
-                        name: "FK_Agents_Account_AccountId",
+                        name: "FK_Agents_AgentAccounts_AccountId",
                         column: x => x.AccountId,
-                        principalTable: "Account",
+                        principalTable: "AgentAccounts",
                         principalColumn: "AccountId",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
@@ -164,7 +164,7 @@ namespace Doctrina.Persistence.Migrations
                     Document_ContentType = table.Column<string>(maxLength: 255, nullable: true),
                     Document_Content = table.Column<byte[]>(nullable: true),
                     Document_Checksum = table.Column<string>(maxLength: 50, nullable: true),
-                    Document_LastModified = table.Column<DateTimeOffset>(nullable: true, defaultValue: new DateTimeOffset(new DateTime(2019, 10, 12, 23, 3, 52, 686, DateTimeKind.Unspecified).AddTicks(5944), new TimeSpan(0, 0, 0, 0, 0))),
+                    Document_LastModified = table.Column<DateTimeOffset>(nullable: true, defaultValue: new DateTimeOffset(new DateTime(2019, 10, 13, 17, 35, 39, 786, DateTimeKind.Unspecified).AddTicks(9140), new TimeSpan(0, 0, 0, 0, 0))),
                     Document_CreateDate = table.Column<DateTimeOffset>(nullable: true)
                 },
                 constraints: table =>
@@ -246,7 +246,7 @@ namespace Doctrina.Persistence.Migrations
                     Document_ContentType = table.Column<string>(maxLength: 255, nullable: true),
                     Document_Content = table.Column<byte[]>(nullable: true),
                     Document_Checksum = table.Column<string>(maxLength: 50, nullable: true),
-                    Document_LastModified = table.Column<DateTimeOffset>(nullable: true, defaultValue: new DateTimeOffset(new DateTime(2019, 10, 12, 23, 3, 52, 672, DateTimeKind.Unspecified).AddTicks(15), new TimeSpan(0, 0, 0, 0, 0))),
+                    Document_LastModified = table.Column<DateTimeOffset>(nullable: true, defaultValue: new DateTimeOffset(new DateTime(2019, 10, 13, 17, 35, 39, 760, DateTimeKind.Unspecified).AddTicks(765), new TimeSpan(0, 0, 0, 0, 0))),
                     Document_CreateDate = table.Column<DateTimeOffset>(nullable: true)
                 },
                 constraints: table =>
@@ -270,7 +270,7 @@ namespace Doctrina.Persistence.Migrations
                     Document_ContentType = table.Column<string>(maxLength: 255, nullable: true),
                     Document_Content = table.Column<byte[]>(nullable: true),
                     Document_Checksum = table.Column<string>(maxLength: 50, nullable: true),
-                    Document_LastModified = table.Column<DateTimeOffset>(nullable: true, defaultValue: new DateTimeOffset(new DateTime(2019, 10, 12, 23, 3, 52, 682, DateTimeKind.Unspecified).AddTicks(6711), new TimeSpan(0, 0, 0, 0, 0))),
+                    Document_LastModified = table.Column<DateTimeOffset>(nullable: true, defaultValue: new DateTimeOffset(new DateTime(2019, 10, 13, 17, 35, 39, 773, DateTimeKind.Unspecified).AddTicks(4688), new TimeSpan(0, 0, 0, 0, 0))),
                     Document_CreateDate = table.Column<DateTimeOffset>(nullable: true),
                     AgentId = table.Column<Guid>(nullable: true),
                     ActivityId = table.Column<Guid>(nullable: true)
@@ -468,13 +468,6 @@ namespace Doctrina.Persistence.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Account_HomePage_Name",
-                table: "Account",
-                columns: new[] { "HomePage", "Name" },
-                unique: true,
-                filter: "[Account_HomePage] IS NOT NULL AND [Account_Name] IS NOT NULL");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Activities_DefinitionActivityDefinitionId",
                 table: "Activities",
                 column: "DefinitionActivityDefinitionId");
@@ -512,6 +505,13 @@ namespace Doctrina.Persistence.Migrations
                 column: "AgentId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_AgentAccounts_HomePage_Name",
+                table: "AgentAccounts",
+                columns: new[] { "HomePage", "Name" },
+                unique: true,
+                filter: "[HomePage] IS NOT NULL AND [Name] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_AgentProfiles_AgentId",
                 table: "AgentProfiles",
                 column: "AgentId");
@@ -531,6 +531,13 @@ namespace Doctrina.Persistence.Migrations
                 name: "IX_Agents_GroupEntityAgentId",
                 table: "Agents",
                 column: "GroupEntityAgentId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Agents_ObjectType_AccountId",
+                table: "Agents",
+                columns: new[] { "ObjectType", "AccountId" },
+                unique: true,
+                filter: "[AccountId] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Agents_ObjectType_Mbox",
@@ -581,8 +588,7 @@ namespace Doctrina.Persistence.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_StatementRefEntity_Id",
                 table: "StatementRefEntity",
-                column: "Id")
-                .Annotation("SqlServer:Clustered", true);
+                column: "Id");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Statements_ActorAgentId",
@@ -722,7 +728,7 @@ namespace Doctrina.Persistence.Migrations
                 name: "ActivityDefinitions");
 
             migrationBuilder.DropTable(
-                name: "Account");
+                name: "AgentAccounts");
 
             migrationBuilder.DropTable(
                 name: "InteractionActivities");
