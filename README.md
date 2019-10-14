@@ -6,6 +6,7 @@ You will need the following tools:
 
 * [Visual Studio Code or 2019](https://www.visualstudio.com/downloads/)
 * [.NET Core SDK 3.0](https://www.microsoft.com/net/download/dotnet-core/3.0)
+* [Node JS](https://nodejs.org/en/download/)
 
 ### Setup
 Follow these steps to get your development environment set up:
