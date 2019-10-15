@@ -21,7 +21,7 @@ namespace Doctrina.WebUI
     {
         public static async Task Main(string[] args)
         {
-            var host = CreateWebHostBuilder(args);
+            var host = CreateWebHostBuilder(args).Build();
 
             using (var scope = host.Services.CreateScope())
             {
@@ -60,7 +60,7 @@ namespace Doctrina.WebUI
             host.Run();
         }
 
-        public static IWebHost CreateWebHostBuilder(string[] args) =>
+        public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
              WebHost.CreateDefaultBuilder(args)
                 .ConfigureAppConfiguration((hostingContext, config) =>
                 {
@@ -91,7 +91,6 @@ namespace Doctrina.WebUI
                      logging.ClearProviders();
                  })
                 .UseStartup<Startup>()
-                .UseSerilog()
-                .Build();
+                .UseSerilog();
     }
 }
